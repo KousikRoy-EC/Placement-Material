@@ -28,9 +28,6 @@ int main(){
 }
 */
 
-
-
-
 // 2. Fibonacci series
 
 /*
@@ -57,12 +54,6 @@ int main(){
 }
 */
 
-
-
-
-
-
-
 // 3. Pallindrome no
 
 /*
@@ -72,6 +63,7 @@ bool checkPallindrom(int num){
     reverse(rev.begin(),rev.end());
     return rev==converted ? true : false;
 }
+
 
 
 bool checkPallindrom(int num)
@@ -112,6 +104,44 @@ int main()
 
 
 
+// lcm and gcd of numbers
+
+/*
+int gcd(int num1,int num2){
+    if(num2==0){
+        return num1;
+    }
+    return gcd(num2,num1%num2);
+
+    ||
+
+
+    while (num2 != 0) {
+        int temp = num2;
+        num2 = num1 % num2;
+        num1 = temp;
+    }
+    return num1;
+}
+
+int lcm(int num1,int num2){
+    return (num1*num2)/gcd(num1,num2);
+}
+
+int main(){
+    int num1,num2;
+    cout<<"Enter two numbers";
+    cin>>num1>>num2;
+    cout<<"The gcd of two numbers is : "<<gcd(num1,num2);
+    cout<<"The lcm of two numbers is : "<<lcm(num1,num2);
+    return 0;
+}
+*/
+
+
+
+
+
 // factorial
 /*
 int factorial(int num){
@@ -129,10 +159,6 @@ int main(){
     return 0;
 }
 */
-
-
-
-
 
 // 4. Armstrong no
 
@@ -168,20 +194,16 @@ int main()
 
 */
 
-
-
-
-
 // decimal to binary
 
 /*
 void decimalToBinary(int decimal) {
     if (decimal == 0) {
-        cout << "0";  
+        cout << "0";
         return;
     }
 
-    int binary[32];  
+    int binary[32];
     int i = 0;
 
     while (decimal) {
@@ -207,19 +229,12 @@ int main() {
 }
 */
 
-
-
-
-
-// A year is a leap year if the following conditions are satisfied: 
+// A year is a leap year if the following conditions are satisfied:
 
 // The year is multiple of 400.
 // The year is multiple of 4 and not multiple of 100.
 
-
-
-
-// Anagram 
+// Anagram
 /*
 bool anagram(string st1,string st2){
     if(st1.length()!=st2.length()){
@@ -256,9 +271,6 @@ return 0;
 }
 */
 
-
-
-
 // program for malloc and calloc in c++
 /*
 int main(){
@@ -285,7 +297,6 @@ int main(){
 
 */
 
-
 // program for calloc
 /*
 int main(){
@@ -311,13 +322,7 @@ int main(){
 }
 */
 
-
-
-
-
-
-
-// structure pointer 
+// structure pointer
 
 /*
 struct Person {
@@ -326,7 +331,7 @@ struct Person {
 };
 
 int main() {
-   
+
     Person person;
     Person* personPtr;
     personPtr = &person;
@@ -340,26 +345,102 @@ int main() {
 }
 */
 
+// Declaring A Pointer To A Function
 
-
-
-
-// function pointer
-
-int myFun(int n){
-    cout<<"this is referenced function through pointer";
-    return n;
+/*
+int addition(int num1,int num2){
+    return num1+num2;
 }
 
 int main(){
+    int (*ptr)(int,int)=addition; // Declaring A Pointer To A Function
+    cout<<(*ptr)(2,3);  // Calling A Function Through Function Pointer
+    return -1;
+}
+*/
+
+// Passing a Function's Address as an Argument to Other Function
+
+/*
+int addition(int num1,int num2){
+    return num1+num2;
+}
+
+void print(int (*ptr)(int,int)){
+    cout<<(*ptr)(2,3);
+}
+
+int main(){
+    print(addition);
+    return -1;
+}
+*/
+
+// functional array pointer
+
+/*
+int addition(int num1,int num2){
+    return num1+num2;
+}
+
+int subtraction(int num1,int num2){
+    return num1-num2;
+}
+
+int multiplication(int num1,int num2){
+    return num1*num2;
+}
+
+int division(int num1,int num2){
+    return num1/num2;
+}
+
+int main(){
+    int (*ptr[4])(int,int)={addition,subtraction,multiplication,division};
+    cout<<ptr[0](2,3)<<endl;
+    cout<<ptr[1](2,3)<<endl;
+    cout<<ptr[2](2,3)<<endl;
+    cout<<ptr[3](2,3)<<endl;
+    return -1;
+}
+*/
+
+// Memory Sharing: A union allows multiple members to share the same memory space. When a union is defined, the memory allocated for it can be used to store any of its members interchangeably.
+
+// Size: The size of a union is determined by the largest member within it. This means the memory allocated for a union is large enough to accommodate its largest member. Other members share the same memory space, potentially leading to a situation where the actual size of the union may be larger than the sum of the sizes of its individual members.
+
+// Member Access: Only one member of the union can be accessed at any given time. Changing the value of one member may affect the values of other members, as they share the same memory location. It is the programmer's responsibility to keep track of which member is currently valid.
+
+// Default Initialization: Unions do not initialize their members by default. It is essential to explicitly assign a value to a member before accessing it to ensure its validity.
+
+/*
+
+union Data
+{
+    int intValue;
+    float floatValue;
+    char charValue;
+};
+
+int main()
+{
+    Data myData;
+
+    myData.intValue = 42;
+    std::cout << "Integer value: " << myData.intValue << std::endl;
+
+    myData.floatValue = 3.14;
+    std::cout << "Float value: " << myData.floatValue << std::endl;
+    std::cout << "Integer value: " << myData.intValue << std::endl; // Accessing intValue after modifying floatValue
+
+    myData.charValue = 'A';
+    std::cout << "Character value: " << myData.charValue << std::endl;
+    std::cout << "Float value: " << myData.floatValue << std::endl; // Accessing floatValue after modifying charValue
 
     return 0;
 }
 
-// function pointer , union , union pointer
-// lcm and gcd of no
-
-
+*/
 
 // pattern 1
 
@@ -397,12 +478,6 @@ int main(){
 
 */
 
-
-
-
-
-
-
 // Pattern 2
 
 /*
@@ -424,7 +499,7 @@ int main(){
         {
             arr[i][k]=' ';
         }
-        
+
         for(int j=i;j<5;j++){
             arr[i][j]='*';
         }
@@ -446,15 +521,11 @@ int main(){
 
 */
 
-
-
-
-
 // pattern 3
 
 /*
 * * * * *
-* * * * 
+* * * *
 * * *
 * *
 *
@@ -485,9 +556,6 @@ int main(){
 
 */
 
-
-
-
 // pattern 4
 
 /*
@@ -514,11 +582,6 @@ int main(){
 }
 */
 
-
-
-
-
-
 /*
 
 1 2 3 4 5
@@ -540,22 +603,18 @@ int main(){
        }
        cout<<endl;
     }
-    
+
     return 0;
 }
 
 */
-
-
-
-
 
 // pattern 5
 /*
    *
   * *
  * * * *
-* * * * * 
+* * * * *
 
 
 
@@ -582,10 +641,6 @@ int main(){
 }
 
 */
-
-
-
-
 
 // pattern 7
 /*
@@ -620,11 +675,6 @@ int main(){
 
 */
 
-
-
-
-
-
 /*
 
         *
@@ -635,7 +685,7 @@ int main(){
 
 
 int main(){
-    
+
     int num;
     cout<<"Enter num";
     cin>>num;
@@ -652,7 +702,7 @@ int main(){
         }
 
         cout<<endl;
-        
+
     }
 
     return 0;
@@ -660,10 +710,6 @@ int main(){
 
 
 */
-
-
-
-
 
 /*
 
@@ -705,14 +751,11 @@ int main(){
 
         cout<<endl;
     }
-    
+
     return 0;
 }
 
 */
-
-
-
 
 /*
     *
@@ -740,7 +783,7 @@ int main(){
         {
            cout<<" ";
         }
-        
+
         for (int j = 1; j <i+1; j++)
         {
             cout<<"*";
@@ -758,19 +801,17 @@ int main(){
 
         for (int k = 0; k < rows-i; k++)
         {
-         cout<<"*";  
+         cout<<"*";
         }
-        
+
 
         cout<<endl;
     }
-    
+
     return 0;
 }
 
 */
-
-
 
 /*
 
@@ -824,10 +865,6 @@ int main() {
 
 */
 
-
-
-
-
 /*
 
 1
@@ -857,12 +894,11 @@ int main(){
         }
         cout<<endl;
     }
-    
+
     return 0;
 }
 
 */
-
 
 /*
 
@@ -894,6 +930,3 @@ int main(){
 }
 
 */
-
-
-
