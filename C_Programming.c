@@ -489,5 +489,97 @@ Ans -> A switch statement in C is a control flow statement used to select one of
 
 Ans -> You can break out of a loop in C using the break statement. When encountered within a loop, the break statement immediately terminates the loop and transfers control to the statement immediately following the loop.
 
+
+extern keyword is used to declare variables or functions that have external linkage, meaning they are defined in another file or translation unit. 
+If an extern variable refers to a global variable, it is typically stored in the data segment or BSS segment of memory:
+Data Segment: If the variable is initialized.
+BSS Segment: If the variable is uninitialized (has no explicit initialization value).
+extern variables cannot themselves be static as static enforces internal linkage, conflicting with extern
+
+
+
+
+A static variable inside a function or file has local scope but retains its value between function calls because it has a lifetime equivalent to the program's lifetime.
+A static variable is initialized to zero (0) by default if not explicitly initialized.
+
+
+
+volatile when a variable may change due to external events, interrupts, or hardware interactions.
+Global volatile variables: Stored in the data or BSS segment (depending on whether they are initialized).
+Local volatile variables: Stored in the stack.
+Dynamic volatile variables: Stored in the heap.
+
+
+auto	
+Local (block scope)	    
+Stack       	
+Visible within the block only	
+Default storage class for local variables.
+default value is garbage
+
+
+
+The register keyword in C is used as a hint to the compiler that a variable will be frequently accessed and should be stored in a CPU register (if possible) for faster access,
+register keyword allocate temproray memory location so it cannot be used fior globalo or static variable however can be used inside a function where faster access of variable is required]
+The compiler attempts to store register variables in CPU registers for faster access.
+If registers are unavailable, the variable will be stored in stack memory (like a regular variable).
+
+
+
+Global const variables: Stored in the read-only data section of memory (RODATA).
+Local const variables: Stored in the stack like regular local variables.
+Dynamic const variables: Allocated in the heap.
+Initialization: Must be initialized at the time of declaration because their value cannot be changed later.
+Once initialized, the value of a const variable cannot be modified directly or indirectly.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Pointers and const
+
+Pointer to const Data: The data the pointer points to cannot be modified.
+
+const int *ptr = &value; // Read-only access to 'value'
+*ptr = 20; // Error
+ptr = &other_value; // Allowed
+
+const Pointer: The pointer itself cannot point to another location.
+
+int *const ptr = &value; // Pointer cannot change
+*ptr = 20; // Allowed
+ptr = &other_value; // Error
+
+const Pointer to const Data: Neither the data nor the pointer can change.
+
+const int *const ptr = &value; // Fully immutable
+*ptr = 20; // Error
+ptr = &other_value; // Error
+
+
+
+
+
+
+
+
 */
 
