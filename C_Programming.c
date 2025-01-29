@@ -574,12 +574,130 @@ const int *const ptr = &value; // Fully immutable
 *ptr = 20; // Error
 ptr = &other_value; // Error
 
-
-
-
-
-
-
-
 */
+
+
+As soon as pointer is declared memory is reserved for that pointer no matter whether we point to any variable or not
+
+pointer to a function and calling it
+
+-------------------------------
+
+float OneThird(float);
+float OneFifth(float);
+
+int main()
+{
+float(*pf)(float);
+pf = OneThird;
+printf("%f\n", (*pf)(3.0));
+return 0;
+}
+
+float OneThird(float x)
+{
+return x / 3;
+}
+
+float OneFifth(float x)
+{
+return x / 5;
+}
+
+-------------------------------
+The parentheses around *pf are
+needed to indicate that pf is a pointer.
+
+
+
+Array of function pointers
+
+---------------------------------
+
+
+#include <stdio.h>
+
+ int add(int, int);
+ int subtract(int, int);
+
+ int main(void)
+ {
+ int a, choice;
+ int(*fptr[2])(int, int) = { add, subtract };
+
+ printf("Enter your choice:\n");
+ printf("\t0:\taddition (10 + 2)\n\t1:\tsubtraction (10 - 2)\n");
+ scanf("%d%*c", &choice);
+
+ a=(*fptr[choice])( 10, 2);
+
+ printf("The requested operation gives: %d\n", a);
+return 0;
+}
+
+int add(int x, int y)
+{
+return x + y;
+}
+
+int subtract(int x, int y)
+{
+return x - y;
+}
+
+------------------------------------------------------
+
+NULL macro is defined in stdio.h and stddef.h
+
+----------------------------------------
+
+#include<stdio.h>
+
+int main()
+{
+    static char *s[] = {"black", "white", "pink", "violet"};
+    char **ptr[] = {s+3, s+2, s+1, s}, ***p;
+    p = ptr;
+    ++p;
+    printf("%s", **p);
+    // printf("%s", ***p);    
+    // Seg fault beacuse p points to prt array 
+    // *p points to ptr[0] (value: s + 3).
+    // **p points to s[3] (value: "violet").
+    // ***p attempts to dereference "violet" as a pointer, which is invalid.
+    return 0;
+}
+
+-----------------------------------------
+
+
+
+*++p is equivalent to *(++p) because ++ (pre-increment) has higher precedence than *.
+The pointer p is incremented before its value is dereferenced.
+
+
+
+*p++ is equivalent to *(p++) because ++ (post-increment) has higher precedence.
+The pointer p is incremented after its value is dereferenced.
+
+
+
+Syntax	Pointer    Modifiable?	         Data Modifiable?
+const char*	       YeS			No
+char *const	       No			Yes
+const char* const      No			No
+
+
+
+Cannot use Static for function parameters
+
+The size of pointer is 4 byte but it is compiler dependent 
+
+
+
+
+
+
+
+
 
