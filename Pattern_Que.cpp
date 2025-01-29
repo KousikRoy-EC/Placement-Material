@@ -930,3 +930,296 @@ int main(){
 }
 
 */
+
+
+
+
+
+/*
+Remove Duplicates From Array
+*/
+
+/*
+void removeDuplicatesFromArray(unsigned int*,unsigned int);
+
+int main(){
+
+    unsigned int array[]={1,2,3,3,3,4,5,5,6,7,7,7};
+    removeDuplicatesFromArray(array,(sizeof(array)/sizeof(array[0])));
+    return 0;
+}
+
+void removeDuplicatesFromArray(unsigned int* array, unsigned int size){
+
+    signed int idx=0;
+
+    for(int i=1;i<size;i++){
+        if(array[i]!=array[idx]){
+            array[++idx]=array[i];
+        }
+    }
+
+    for(int index=0;index<=idx;index++){
+        cout<<array[index]<<" ";
+    }
+}
+*/
+
+
+// largest element in an array
+
+// int secondLargestElement(int *arr,int size){
+//     int i=0,firstLargestVar=-1,secondLargestVar=-1;
+//     while (i < size)
+//     {
+//        if(firstLargestVar<arr[i]){
+//         firstLargestVar=arr[i];
+//        }
+//         else if(secondLargestVar<arr[i]){
+//          secondLargestVar=arr[i];
+//        }
+//        i++;
+//     }
+//     return secondLargestVar;
+
+// }
+
+// int main(){
+//     int arr[]={999,953,5,6,7,23,543,87,23,543};
+//     int result = secondLargestElement(arr,(sizeof(arr)/sizeof(arr[0])));
+//     cout<<result<<endl;
+//     return 0;
+// }
+
+// Arrays
+
+/* Left Rotatae array by 1 */
+
+/*
+void swapFunction(int *array,int startIndex,int endIndex){
+    while (startIndex<endIndex)
+    {
+        int temp = array[startIndex];
+        array[startIndex++] = array[endIndex];
+        array[endIndex--] = temp;
+    }
+}
+int *LeftRotatearray(int *arr, int size,int n){
+    swapFunction(arr,0,n-1);
+    swapFunction(arr,n,size-1);
+    swapFunction(arr,0,size-1);
+    return arr;
+}
+int main(){
+    int arr[]={1,2,3,4,5};
+    int *ans=LeftRotatearray(arr,sizeof(arr)/sizeof(arr[0]),3);
+    for(int i=0;i<(sizeof(arr)/sizeof(arr[0]));i++){
+        cout<<ans[i]<<" ";
+    }
+    return 0;
+}
+*/
+
+/* Leader element in an array */
+
+/*
+void printLeaders(vector<int>& arr,int size){
+    int LeaderTillNow=-1;
+    vector<int> ans;
+    for(int i=size-1;i>=0;i--){
+        if(arr[i]>LeaderTillNow){
+            ans.push_back(arr[i]);
+            LeaderTillNow=arr[i];
+        }
+    }
+
+    reverse(ans.begin(),ans.end());
+    for(int i:ans){
+        cout<<i<<" ";
+    }
+}
+int main(){
+    vector<int> array={7,10,4,3,6,5,2};
+    printLeaders(array,array.size());
+    return 0;
+}
+
+*/
+
+/* Maximum Difference in an array such that j>i i.e arr[j]-arr[i] */
+
+/*
+
+int16_t maxDifference(vector<int>array){
+    int minTillNow = INT_MAX;
+    int maxTillNow = INT_MIN;
+
+    for(int i:array){
+        // minTillNow = min(minTillNow,i);
+        // maxTillNow = max(maxTillNow,i-minTillNow);
+
+        if(minTillNow>i){
+            minTillNow=i;
+        }
+        if((i - minTillNow)>maxTillNow){
+            maxTillNow=i - minTillNow;
+        }
+    }
+    return maxTillNow;
+}
+int main(){
+    vector<int> array={43,2,3,10,6,4,8,1};
+    int16_t result=maxDifference(array);
+    cout<<"Max Difference: "<<result<<endl;
+    return 0;
+}
+
+*/
+
+/*
+Frequency of Element in sorted array
+*/
+
+/*
+
+int main()
+{
+    int arr[] = {1, 2, 2, 3, 4, 4, 4, 5, 5, 5, 6, 6, 6, 6, 7};
+    int n = sizeof(arr) / sizeof(arr[0]);
+
+    int count = 1;
+    for (int i = 1; i < n; i++)
+    {
+        if (arr[i] != arr[i - 1])
+        {
+            cout << arr[i - 1] << " occurs " << count << " times " << endl;
+            count = 1;
+        }
+        else
+        {
+            count++;
+        }
+
+        if (i == n - 1)
+        {
+            cout << arr[i] << " occurs " << count << " times " << endl;
+        }
+    }
+}
+
+*/
+
+/* STOCK BUY SELL - 1 */
+
+/*
+
+int maxProfit(vector<int>& prices){
+    int maxProfit=0;
+    for(int i=1; i<prices.size(); i++){
+        if(prices[i]>prices[i-1]){
+            maxProfit+=prices[i]-prices[i-1];
+        }
+    }
+    return maxProfit;
+}
+
+int main(){
+    vector<int> prices = {7, 1, 5, 3, 6, 4};
+    int result = maxProfit(prices);
+    cout<<"Maximum Profit: "<<result<<endl;
+    return 0;
+}
+
+*/
+
+/* Trapping Rain water problem */
+/*
+int maxWater(vector<int> &waterTank)
+{
+    vector<int> leftMax;
+    vector<int> rightMax;
+    int maxStoredWater=0;
+    int maxLeft = waterTank[0];
+    int maxRight = waterTank[waterTank.size() - 1];
+
+    for (int i = 0; i < waterTank.size(); i++)
+    {
+        maxLeft = max(maxLeft, waterTank[i]);
+        leftMax.push_back(maxLeft);
+    }
+
+    for (int i = (waterTank.size() - 1); i >= 0; i--)
+    {
+        maxRight = max(maxRight, waterTank[i]);
+        rightMax.push_back(maxRight);
+    }
+    reverse(rightMax.begin(), rightMax.end());
+
+    for (int i = 0; i < waterTank.size(); i++)
+    {
+        int tempmaxStoredWater = ((min(leftMax[i], rightMax[i]))-waterTank[i]);
+        if (tempmaxStoredWater > 0)
+        {
+            maxStoredWater += tempmaxStoredWater;
+        }
+    }
+
+    return maxStoredWater;
+}
+
+int main()
+{
+    vector<int> waterTank = {7, 1, 5, 3, 6, 4};
+    int result = maxWater(waterTank);
+    cout << "Maximum water stored : " << result << endl;
+    return 0;
+}
+*/
+
+
+
+
+
+/* Max Consecutive 1's in a binary array */
+/*
+
+int maxConsecutiveOne(vector<int>Arr){
+    int count=0;
+    int result=0;
+    for(int element:Arr){
+        (element != 0) ? count++ : count=0;
+        result=max(result,count);
+    }
+    return result;
+}
+
+int main(){
+    vector<int> binaryArray = {1,0,1,1,1,1,0,1,1,1,1,1};
+    int result = maxConsecutiveOne(binaryArray);
+    cout << "Maximum Consecutive 1's : " << result << endl;
+    return 0;
+}
+*/
+
+
+
+
+
+// revisit
+/* Maximum Subarray Sum */
+/* Maximum Circular Subarray Sum */
+/* Maximum Consecutive even odd sequence */
+
+int maxSubarraySum(vector<int>Arr){
+    int sum=0;
+   
+    return sum;
+}
+
+int main(){
+    vector<int> binaryArray = {2,3,-8,7,-1,2,3};
+    int result = maxSubarraySum(binaryArray);
+    cout << "Maximum subarray sum : " << result << endl;
+    return 0;
+}
+
