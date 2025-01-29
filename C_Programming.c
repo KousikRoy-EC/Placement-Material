@@ -490,6 +490,179 @@ Ans -> A switch statement in C is a control flow statement used to select one of
 Ans -> You can break out of a loop in C using the break statement. When encountered within a loop, the break statement immediately terminates the loop and transfers control to the statement immediately following the loop.
 
 
+
+51. what is storage class in C?
+
+Ans -> Storage class in C is a keyword that specifies the visibility and lifetime of a variable, function, or block of code. There are four storage classes in C: auto, static, extern, and register.
+
+auto: Default for local variables.
+static:
+Use for global variables that must not be accessed outside the file.
+Use inside a function to retain the value between function calls.
+register: Optimize variables like loop counters for performance.
+extern: Share global variables between multiple files.
+
+52. What is the difference between global and local variables in C?
+
+Ans -> Global variables in C have external linkage and can be accessed from any function within the same translation unit. Local variables in C have automatic linkage and can only be accessed within the function in which they are declared.
+
+53. processing steps in C
+
+Source Code (.c)
+        |
+    Preprocessor
+        |
+Preprocessed File (.i)
+        |
+     Compiler
+        |
+  Assembly Code (.s)
+        |
+    Assembler
+        |
+  Object File (.o)
+        |
+     Linker
+        |
+   Executable (a.out)
+
+The preprocessor handles all preprocessor directives (lines starting with #), such as #include, #define, and #ifdef. It produces an intermediate file called the preprocessed file.
+
+Key Tasks:
+Expand macros defined using #define.
+Include the contents of header files (e.g., #include <stdio.h>).
+Remove comments from the source code.
+Process conditional compilation (#ifdef, #endif, etc.).
+
+
+The compiler takes the preprocessed file and translates it into assembly code. Assembly code is a low-level, human-readable representation of machine instructions.
+
+Key Tasks:
+Syntax analysis: Ensures the code follows the rules of C.
+Semantic analysis: Checks data types, scope rules, and consistency.
+Optimization: Improves code efficiency without changing functionality.
+
+
+The assembler converts the assembly code into machine code (binary instructions that the CPU can execute). This process generates an object file.
+
+Key Tasks:
+Translate assembly instructions into binary instructions.
+Generate relocation information for symbols (e.g., function or variable references).
+
+
+The linker combines the object file(s) and required libraries into a single executable file.
+
+Key Tasks:
+Resolve external symbols: Functions or variables used in one file but defined in another.
+Combine multiple object files if the program is split across multiple .c files.
+Link standard libraries (e.g., libc for printf, scanf, etc.).
+
+
+54 . pointer and its types
+	                     
+Null Pointer	                                                                       
+A pointer that is initialized to NULL (a special value indicating the pointer does not point to any valid memory location).
+int *ptr = NULL;
+
+Void Pointer	
+A pointer with no specific data type. It can point to any type of data but cannot be dereferenced directly without typecasting.
+void *ptr;
+int a = 10;
+ptr = &a;
+
+Wild Pointer
+
+A pointer that is not initialized and points to an unknown memory location, leading to undefined behavior.
+int *ptr; // Wild pointer
+*ptr = 10; // Undefined behavior
+
+Dangling Pointer	
+A pointer that refers to a memory location which has already been freed or deallocated.
+int *ptr = (int *)malloc(sizeof(int));
+*ptr = 100;
+
+free(ptr); // Memory deallocated
+// ptr is now a dangling pointer
+
+Function Pointer	       
+Array Pointer	           
+Pointer to Pointer	       
+
+Constant Pointer	
+A pointer whose address it holds cannot be changed after initialization.
+int a = 10, b = 20;
+int *const ptr = &a;
+
+*ptr = 15; // Allowed
+ptr = &b;  // Error: Address cannot be changed       
+
+
+Pointer to Constant	    
+A pointer pointing to a constant value. The value it points to cannot be modified, but the pointer itself can change.
+const int a = 10;
+const int *ptr = &a;
+
+*ptr = 20; // Error: Cannot modify the value
+ptr = &b;  // Allowed: Pointer can change
+
+55. what is big and small endian values
+
+Ans -> Big endian and little endian are two different ways of storing multi-byte values in memory.
+
+Big Endian:
+
+Most significant byte (MSB) is stored at the lowest address.
+
+Example:
+
+int value = 0x12345678;
+
+In big endian format, the value 0x12345678 would be stored as follows:
+
+| MSB | LSB |
+12     | 34    | 56    | 78    |
+
+Little Endian:
+
+Least significant byte (LSB) is stored at the lowest address.
+
+Example:
+
+int value = 0x12345678;
+
+In little endian format, the value 0x12345678 would be stored as follows:
+
+| LSB | MSB |
+78    | 56    | 34    | 12    |
+
+
+56. what is static function and variable and where it is stored
+
+Ans ->
+A static function in C is a function that has a scope limited to the file in which it is declared. This means that the function is not visible or accessible outside the file, effectively making it private to that file.
+
+A static function can also use static variables. These variables retain their value between function calls.
+eg
+
+#include <stdio.h>
+
+void staticFunction() {
+    static int count = 0;
+    printf("Static Function Call: %d\n", ++count);
+}
+
+int main() {
+    staticFunction();
+    staticFunction();
+    return 0;
+    // Static Function Call: 1
+    // Static Function Call: 2
+}
+
+
+*/
+
+
 extern keyword is used to declare variables or functions that have external linkage, meaning they are defined in another file or translation unit. 
 If an extern variable refers to a global variable, it is typically stored in the data segment or BSS segment of memory:
 Data Segment: If the variable is initialized.
