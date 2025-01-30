@@ -1205,21 +1205,142 @@ int main(){
 
 
 
+
+
 // revisit
 /* Maximum Subarray Sum */
-/* Maximum Circular Subarray Sum */
-/* Maximum Consecutive even odd sequence */
 
-int maxSubarraySum(vector<int>Arr){
-    int sum=0;
-   
-    return sum;
+// Naive Solution O(n2)
+
+/*
+int maxSubarraySum(vector<int> Arr)
+{
+    int result = 0;
+
+    for (int i = 0; i < Arr.size(); i++)
+    {
+        int curr_max = Arr[i];
+        for (int j = i + 1; j < Arr.size(); j++)
+        {
+            curr_max += Arr[j];
+            result = max(result, curr_max);
+        }
+    }
+    return result;
+}
+*/
+
+// Efficient Solution O(n)
+
+/*
+int maxSubarraySum(vector<int> Arr)
+{
+    int result = 0;
+    int curr_res = 0;
+
+    for (int element : Arr)
+    {
+        curr_res = max(curr_res + element, element);
+        result = max(curr_res, result);
+    }
+
+    return result;
 }
 
-int main(){
-    vector<int> binaryArray = {2,3,-8,7,-1,2,3};
+int main()
+{
+    vector<int> binaryArray = {2, 3, -8, 7, -1, 2, 3};
     int result = maxSubarraySum(binaryArray);
     cout << "Maximum subarray sum : " << result << endl;
     return 0;
 }
+
+*/
+
+/* Maximum Circular Subarray Sum */
+
+/*
+int maxSubarraySum(vector<int> Arr)
+{
+    int result = 0;
+    int curr_res = 0;
+
+    for (int element : Arr)
+    {
+        curr_res = max(curr_res + element, element);
+        result = max(curr_res, result);
+    }
+
+    return result;
+}
+
+int maxSumInCircularSubArray(vector<int> arr)
+{
+    int MaxNormal = maxSubarraySum(arr);
+    int result = 0;
+    int arraySum = 0;
+
+    if (MaxNormal < 0)
+    {
+        return MaxNormal;
+    }
+
+    for (int i = 0; i < arr.size(); i++)
+    {
+        arraySum += arr[i];
+        arr[i] = -arr[i];
+    }
+
+    result = max((arraySum + maxSubarraySum(arr)), MaxNormal);
+    return result;
+}
+
+int main()
+{
+    vector<int> Array = {-1, 40, -14, 7, 6, 5, -4, -1};
+    int result = maxSumInCircularSubArray(Array);
+    cout << "Maximum Circular Subarray Sum : " << result << endl;
+    return 0;
+}
+
+
+*/
+
+/*
+
+int maxConsecutiveEvenOddSeq(vector<int> arr)
+{
+    int result = 0;
+    int count = 1;
+
+    for (int i = 1; i < arr.size(); i++)
+    {
+        if (((arr[i - 1] % 2 == 0) && (arr[i] % 2 != 0)) || ((arr[i - 1] % 2 != 0) && (arr[i] % 2 == 0)))
+        {
+            count++;
+            result = max(result, count);
+        }
+        else
+        {
+            count = 1;
+        }
+    }
+
+    return result;
+}
+
+int main()
+{
+    vector<int> Array = {12, 10, 2, 7, 4,2, 5};
+    int result = maxConsecutiveEvenOddSeq(Array);
+    cout << "Maximum Even Odd Consecutive Sequence : " << result << endl;
+    return 0;
+}
+
+*/
+
+
+
+
+
 
