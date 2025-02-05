@@ -1457,6 +1457,35 @@ int main(){
 
 // search in sorted rotated array
 
+/*
+
+void searchInSortedRotated(int *arr,int size,int element){
+    int low=0;
+    int high=size-1;
+
+    while(low<=high){
+        int mid = ((low + high) / 2);
+        if(arr[mid]==element){
+           cout<<"The Element is at Index : "<<mid<<endl;
+           break;
+        }
+        else if((arr[low]<=element) && (arr[mid]>element)){
+            high=mid-1;
+        }
+        else{
+            low=mid+1;
+        }
+    }
+}
+
+int main(){
+    int arr[]={82,90,10,20,22,40,60,70,75,76};
+    int size=(sizeof(arr)/sizeof(arr[0]));
+    searchInSortedRotated(arr,size,22);
+    return 0;
+}
+
+*/
 
 // peak element in an array greater than neighbour
 
