@@ -1340,7 +1340,127 @@ int main()
 */
 
 
+// minimum no of flips to binary tree to make it look of same element
+
+/*
+void minimumNoOfFlips(vector<int> arr)
+{
+    int result = arr[0];
+
+    for (int i = 1; i < arr.size();i++)
+    {
+        if (arr[i]!=result)
+        {
+            cout<<"Flip From "<<i<<"to";
+            while( i!= (arr.size()) && arr[i]!=result) i++;
+            cout<<(i-1)<<endl;
+        }
+    }
+}
+
+int main(){
+    vector<int> Array = {0,1,1,0,1,0,0,0,0,0};
+    minimumNoOfFlips(Array);
+    return 0;
+}
+*/
+
+// equilibrium point in an array is a point element from where left sumw is equal to right sum
+
+// [2,4,5,6,54,11,6];
+// 54 is equilibrium point element 
+
+/*
+
+void equilibriumPoint(vector<int> arr)
+{
+    int leftSum=0;
+    int totalSum=0;
+
+    for (int element:arr) totalSum+=element;
+
+    for (int element:arr){
+        if(leftSum == (totalSum - element)){
+            cout<<"The Equilibrium Point is Element - "<<element;
+        }
+        else{
+            leftSum+=element;
+            totalSum-=element;
+        }
+    }
+}
+
+int main(){
+    vector<int> Array = {2,4,5,6,54,11,6};
+    equilibriumPoint(Array);
+    return 0;
+}
+
+*/
+
+// median in 2d matrix where row are sorted in increasing order
 
 
 
 
+// ###################### Searching ########################
+
+// index of first occurence in sorted array logic would be same for last occurence
+
+/*
+void indexOfFirstOccurennce(int *arr,int size ,int element){
+    int low=0;
+    int high=size-1;
+
+    while(low<=high){
+        int mid = ((low + high) / 2);
+        if(arr[mid]==element && (mid-1) >= 0 && arr[mid-1]!=arr[mid]){
+           cout<<"The First Occurence of Element is at Index : "<<mid<<endl;
+           break;
+        }
+        else if(arr[mid]>=element){
+            high=mid-1;
+        }
+        else{
+            low=mid+1;
+        }
+    }
+}
+
+void indexOfLastOccurennce(int *arr,int size,int element){
+     int low=0;
+    int high=size-1;
+
+    while(low<=high){
+        int mid = ((low + high) / 2);
+        if(arr[mid]==element && (mid+1) < (size-1) && arr[mid+1]!=arr[mid]){
+           cout<<"The Last Occurence of Element is at Index : "<<mid<<endl;
+           break;
+        }
+        else if(arr[mid]>element){
+            high=mid-1;
+        }
+        else{
+            low=mid+1;
+        }
+    }
+}
+
+int main(){
+    int arr[]={10,20,20,40,60,70,75,75,82,90};
+    int size=(sizeof(arr)/sizeof(arr[0]));
+    indexOfFirstOccurennce(arr,size,75);
+    indexOfLastOccurennce(arr,size,20);
+    return 0;
+}
+*/
+
+// search in sorted rotated array
+
+
+// peak element in an array greater than neighbour
+
+
+// triplet sum in an array
+
+// majority element in an array
