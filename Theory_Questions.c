@@ -910,3 +910,29 @@ then add 1 to find its 2's compliment 1111 for 64 bit system this conversion bec
 
 this code prints Hello then the amount of character in printf for here Hello5 is the output
 
+
+
+
+
+Unsigned Representation
+All bits are used to represent the magnitude.
+
+
+Signed Representation (Two's Complement)
+The MSB is used as the sign bit:
+0 → Positive number
+1 → Negative number
+
+malloc allocates a void pointer then we typecast it to use it as int * ptr
+
+
+
+
+int main() {
+char *str = "Hello";
+str[0] = 'M';
+printf("%s", str);
+}
+
+"Hello" is a string literal and is stored in a read-only section of memory.
+char *str is a pointer that holds the address of this string literal.
