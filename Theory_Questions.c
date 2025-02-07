@@ -868,7 +868,9 @@ The size of pointer is 4 byte but it is compiler dependent
 
 
 
+In C, the char type is implementation-dependent, meaning it can either be signed or unsigned based on the system or compiler being used. By default:
 
+On most systems (such as those following the typical 2's complement representation for integers), a char is signed.
 
 
 
