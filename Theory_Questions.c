@@ -875,4 +875,29 @@ On most systems (such as those following the typical 2's complement representati
 
 
 
+   int main() {
+       int x = 2147483647;
+       x = x + 1;
+       printf("%d", x);
+       return 0;
+
+Signed integer overflow.
+
+ 
+
+   int main() {
+       unsigned int a = 1;
+       int b = -1;
+       if (a > b)
+           printf("True");
+       else
+           printf("False");
+       return 0;
+   }
+  
+prints false as there is type conversion happen between signed and unsigned int signed int is converted to unsigned int 
+so int b = -1
+represent as in 4 bit represented as 0001
+2's compliment of this is calculate using first find 1's compliment 1110
+then add 1 to find its 2's compliment 1111 for 64 bit system this conversion becomes very high possitive no 
 
