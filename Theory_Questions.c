@@ -901,3 +901,12 @@ represent as in 4 bit represented as 0001
 2's compliment of this is calculate using first find 1's compliment 1110
 then add 1 to find its 2's compliment 1111 for 64 bit system this conversion becomes very high possitive no 
 
+
+
+  int main() {
+       printf("%d", printf("Hello"));
+       return 0;
+   }
+
+this code prints Hello then the amount of character in printf for here Hello5 is the output
+
