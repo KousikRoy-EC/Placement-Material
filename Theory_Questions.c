@@ -709,21 +709,59 @@ Once initialized, the value of a const variable cannot be modified directly or i
 
 
 
+jagged array arre array of different sized columng in 2D matrix allocated dynamically
 
+if we assign the range of a datatype and then do ++ or increment the 
+identifier then it will point to the starting range of it or nrgative first range if
+ it is unsigned array.
 
+main(){
+    char ch=127; //char is of one byte so it ranges form -128 to 127;
+    ch++;
+    printf("%d",ch); // this will print -128 
+}
 
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Declaration Type	                   Storage Location	                        Scope                               Lifetime
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+int *ptr;  (inside a function)	       Stack	                                Block (function-local)	            Auto (deallocated when function exits)
+static int *ptr; (inside a function)   Data (BSS)	                            Block (function-local)	            Retains value across function calls
+int *ptr; (outside a function)	       Data (BSS)	                            Global (entire file)	            Exists for entire program
+int *ptr = malloc()	                   Stack (ptr), Heap (allocated memory)	    Block (function-local)	            Heap memory persists until free(ptr); is called
 
+pointer size is compiler dependent and mostly it is 32bit - 4 byte or 64 bit - 8 byte platform dependent
 
+ptr itself is stored in stack (if local) or data section (if static/global).
+It can point to memory in stack or heap.
+Heap memory persists until explicitly freed.
+Scope and lifetime depend on declaration type.
 
+When a class contains a virtual function, it introduces a Virtual Table (V-Table) to
+handle dynamic (runtime) polymorphism. The memory for virtual functions is stored in
+different sections of memory, primarily the code segment and heap (for objects with new).
 
+When a class contains a virtual function, a V-Table (Virtual Table) is created. 
+Each object of this class contains a V-Ptr (Virtual Table Pointer), which points to 
+the V-Table.
 
+this v table contains function pointer pointing to all the virtual member fn of that class 
 
+V-Table:
 
+Stored in the Data Segment (Read-Only Section).
+Created once per class that has virtual functions.
+Contains function pointers for all virtual functions of that class.
 
+V-Ptr (Virtual Table Pointer):
 
+Stored inside each object (on Heap/Stack depending on object allocation).
+Points to the V-Table of the class.
 
+Function Implementation:
 
+The compiled function itself is stored in the Code Segment.
 
+* Extra 8 bytes per object (for V-Ptr) means larger object size.
 
 
 
@@ -936,3 +974,5 @@ printf("%s", str);
 
 "Hello" is a string literal and is stored in a read-only section of memory.
 char *str is a pointer that holds the address of this string literal.
+
+
