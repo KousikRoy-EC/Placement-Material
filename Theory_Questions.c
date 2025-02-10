@@ -976,3 +976,14 @@ printf("%s", str);
 char *str is a pointer that holds the address of this string literal.
 
 
+Visibility:
+static functions are file-local (only visible within the same file).
+Normal functions are globally accessible (across files, given proper declarations and linkage).
+Linkage:
+static functions have internal linkage, meaning they don’t collide with functions of the same name in other files.
+Normal functions have external linkage by default, meaning they are accessible from other files in the program.
+Thus, whether to use a static function or a normal function depends on whether you want the function to be used only inside the current file or across multiple files in the program.
+
+
+
+
