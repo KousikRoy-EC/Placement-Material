@@ -986,4 +986,23 @@ Thus, whether to use a static function or a normal function depends on whether y
 
 
 
+FORK RELATED QUESTION FOR OS
+
+#include <stdio.h>
+#include <unistd.h>
+
+int main(){
+    if(fork() && fork())
+	fork();
+    
+    printf("Hello\n");
+    return 0;
+}
+
+      1p        1c
+    1p  1c    1c  1c
+    1C
+
+
+
 
