@@ -1006,3 +1006,13 @@ int main(){
 
 
 
+
+log2n n + 1  gives no of integer in a number
+
+
+
+
+void *memset(void *ptr, int value, size_t num) is used to fill a block of memory with a specific value. It is typically used to initialize or reset a block of memory.
+
+char str[10];
+memset(str, 'A', sizeof(str));
