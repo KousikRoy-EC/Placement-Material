@@ -1062,6 +1062,16 @@ int main()
         t1.join();
 
 
+    cout<<"Thread of fun2 is still to be executed";
+    
+    if (t2.joinable())
+        t2.join();
+
+    return 0;
+}
+
+
+
 
 #include <iostream>
 #include <thread>
@@ -1315,13 +1325,4 @@ int main() {
     return 0;
 }
 */
-
-    cout<<"Thread of fun2 is still to be executed";
-    
-    if (t2.joinable())
-        t2.join();
-
-    return 0;
-}
-
 
