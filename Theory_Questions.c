@@ -1035,6 +1035,166 @@ std::cout << a << " " << b;  // Output: 3 3
 
 /* Thread in CPP */
 
+// By default main function is our main thread.
+// we can create multiple thread inside this main thread.
+// By using thread you can reduce the time of execution by half.
+
+// In c++ we can create thread in 5 different ways.
+// Function Pointers
+// Lambda functions
+// Functors
+// member functions
+// static member function
+
+/*
+
+function pointer method based thread creation
+
+#include <iostream>
+#include <thread>
+#include <chrono>
+using namespace std;
+using namespace std::chrono;
+
+void evenCheck(int var) { 
+    bool result = (var % 2 == 0);
+    cout << (result ? "The number is even\n" : "The number is not even\n");
+}
+
+int main() {
+    int value = 42;
+    std::thread t1(evenCheck, value); 
+    t1.join(); 
+
+    cout << "Function is completed\n"; 
+    return 0;
+}
+*/
+
+
+/*
+
+lambda function method based thread creation
+
+#include <iostream>
+#include <thread>
+#include <chrono>
+using namespace std;
+using namespace std::chrono;
+
+int main() {
+   auto fun= [](int x){
+        while(x){
+            cout<<x<<endl;
+            x--;    
+        }
+   };
+
+   std::thread t(fun,10);
+   t.join();
+   return 0;
+}
+*/
+
+
+/*
+
+functor method based thread creation
+
+#include <iostream>
+#include <thread>
+#include <chrono>
+using namespace std;
+using namespace std::chrono;
+
+class Base{
+public:
+void operator ()(int x){
+ while(x){
+            cout<<x<<endl;
+            x--;    
+        }
+}
+};
+
+int main(){
+std::thread t((Base()),10);
+t.join();
+return 0;
+}
+*/
+
+
+/*
+
+non static member function based thread creation
+
+#include <iostream>
+#include <thread>
+#include <chrono>
+using namespace std;
+using namespace std::chrono;
+
+class Base{
+public:
+void run(int x){
+ while(x){
+            cout<<x<<endl;
+            x--;    
+        }
+}
+};
+
+int main(){
+Base b;
+std::thread t(&Base::run,&b,10);
+t.join();
+return 0;
+}
+*/
+
+
+
+/*
+static member function based thread creation
+
+#include <iostream>
+#include <thread>
+#include <chrono>
+using namespace std;
+using namespace std::chrono;
+
+class Base{
+public:
+static void run(int x){
+ while(x){
+            cout<<x<<endl;
+            x--;    
+        }
+}
+};
+
+int main(){
+std::thread t(&Base::run,10);
+t.join();
+return 0;
+}
+*/
+
+
+// Once thread started execution we wait for that thread to be executed by calling join on that thread object
+// double join will termiate the program
+// Before joining a object of thread we should check whether it is joinable or not using function joinable();
+
+// Detach is used to detach newly created thread from parent thread so it does not wait for thread to get completed  
+// alway check before detaching a thread that it is joinable() otherwise we may end up double detaching and double detach()
+// will result in program termination
+
+
+// either of join or detach should be called on thread because the destructor of thread is called  and checks whether the thread is joinable or ot if yes  then it terminates it.
+
+
+
 Simple example to demonstrate working of thread in cpp as soon as you create thread t1,t2 it starts executing and join waits for that to get executed fully.
 and we should alway put a condition before detahing or joining a thread in cpp. whether it is joinable or not.
 
