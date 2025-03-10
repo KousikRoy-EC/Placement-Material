@@ -1030,3 +1030,43 @@ int b = static_cast<int>(num);
 std::cout << a << " " << b;  // Output: 3 3
 
 
+
+
+
+/* Thread in CPP */
+
+Simple example to demonstrate working of thread in cpp as soon as you create thread t1,t2 it starts executing and join waits for that to get executed fully.
+and we should alway put a condition before detahing or joining a thread in cpp. whether it is joinable or not.
+
+#include <iostream>
+#include <thread>
+#include <mutex>
+using namespace std;
+
+void fun1()
+{
+    cout << "This is fun1" << endl;
+}
+
+void fun2()
+{
+    cout << "This is fun2" << endl;
+}
+
+int main()
+{
+    thread t1(fun1);
+    thread t2(fun2);
+
+    if (t1.joinable())
+        t1.join();
+
+    cout<<"Thread of fun2 is still to be executed";
+    
+    if (t2.joinable())
+        t2.join();
+
+    return 0;
+}
+
+
