@@ -1016,3 +1016,17 @@ void *memset(void *ptr, int value, size_t num) is used to fill a block of memory
 
 char str[10];
 memset(str, 'A', sizeof(str));
+
+
+
+
+
+
+float num = 3.14;
+// C-Style Cast (Allowed but not explicit)
+int a = (int) num;
+// C++ `static_cast` (Preferred) provide type checking during compilation older cast does not do that which results in crash of the program.
+int b = static_cast<int>(num);
+std::cout << a << " " << b;  // Output: 3 3
+
+
