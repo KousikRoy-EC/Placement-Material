@@ -1061,6 +1061,261 @@ int main()
     if (t1.joinable())
         t1.join();
 
+
+
+#include <iostream>
+#include <thread>
+#include <mutex>
+#include <semaphore.h>
+#include <chrono>
+#include <vector>
+using namespace chrono;
+using namespace std;
+
+// Instead of locking unlocking manually try to use lock_guard which provides efficient way to deal with mutext as it automatically unlocks when mutex goes out of scope.
+
+/*
+int counter = 0;
+mutex mtx1;
+
+void increment() {
+    for (int i = 0; i < 100000; ++i) {
+        lock_guard<mutex> lock(mtx1);
+        ++counter;
+    }
+}
+
+int main() {
+    thread t1(increment);
+    thread t2(increment);
+    t1.join();
+    t2.join();
+    cout << "Final Counter: " << counter << endl;
+    return 0;
+}
+
+*/
+
+// But still as we do it inside a loop it alway runs for locking and unclocking mechanism an efficient way of doing it is using a local variable for updateing the result locally and at final updating it using lock guard mutex.
+// Locking the entire loop is inefficient and makes the code single-threaded.
+// Using lock_guard makes your code safer and cleaner.
+// Accumulating locally and updating once reduces locking overhead.
+// Reduces the number of lock/unlock operations, which improves performance.
+
+/*
+
+int counter = 0;
+mutex mtx1;
+
+void increment() {
+    int localCounter = 0;  // Use a local variable to accumulate
+    for (int i = 0; i < 100000; ++i) {
+        ++localCounter;
+    }
+    lock_guard<mutex> lock(mtx1);  // Only one lock for the final update
+    counter += localCounter;
+}
+
+int main() {
+    thread t1(increment);
+    thread t2(increment);
+    t1.join();
+    t2.join();
+    cout << "Final Counter: " << counter << endl;
+    return 0;
+}
+
+*/
+
+
+
+
+// DeadLock when multiple thread share the same resources and the two thread for one another to release the resource there comes in a dead lock situation
+// Thread 1 locks mtx1 and waits for mtx2.
+// Thread 2 locks mtx2 and waits for mtx1.
+// Both threads are waiting on each other, creating a circular dependency.
+// Neither thread can proceed, causing a deadlock.
+
+/*
+
+mutex mtx1, mtx2;
+
+void thread1() {
+    lock_guard<mutex> lockA(mtx1);  // Lock mutex 1
+    cout << "Thread 1 acquired mtx1\n";
+    this_thread::sleep_for(chrono::milliseconds(50));  // Simulate some work
+
+    lock_guard<mutex> lockB(mtx2);  // Trying to lock mutex 2
+    cout << "Thread 1 acquired mtx2\n";
+}
+
+void thread2() {
+    lock_guard<mutex> lockB(mtx2);  // Lock mutex 2
+    cout << "Thread 2 acquired mtx2\n";
+    this_thread::sleep_for(chrono::milliseconds(50));  // Simulate some work
+
+    lock_guard<mutex> lockA(mtx1);  // Trying to lock mutex 1
+    cout << "Thread 2 acquired mtx1\n";
+}
+
+int main() {
+    thread t1(thread1);
+    thread t2(thread2);
+    t1.join();
+    t2.join();
+    return 0;
+}
+*/
+
+
+// To prevent this deadlock situation there is a way of mutex and try lock
+
+// 1) lock(mtx1, mtx2); ensures that both locks are acquired at once in a consistent order.
+
+/*
+mutex mtx1, mtx2;
+
+void thread1() {
+    lock(mtx1, mtx2);  // Acquire both locks without worrying about the order
+    lock_guard<mutex> lockA(mtx1, adopt_lock);  // Adopt the locked state
+    lock_guard<mutex> lockB(mtx2, adopt_lock);  // Adopt the locked state
+    cout << "Thread 1 acquired both mtx1 and mtx2\n";
+}
+
+void thread2() {
+    lock(mtx1, mtx2);  // Acquire both locks without worrying about the order
+    lock_guard<mutex> lockA(mtx1, adopt_lock);  // Adopt the locked state
+    lock_guard<mutex> lockB(mtx2, adopt_lock);  // Adopt the locked state
+    cout << "Thread 2 acquired both mtx1 and mtx2\n";
+}
+
+int main() {
+    thread t1(thread1);
+    thread t2(thread2);
+    t1.join();
+    t2.join();
+    return 0;
+}
+*/
+
+
+// 2) Instead of waiting indefinitely, use try_lock() with a timeout to avoid blocking.
+
+/*
+mutex mtx1, mtx2;
+
+void thread1() {
+    while (true) {
+        if (mtx1.try_lock()) {
+            cout << "Thread 1 acquired mtx1\n";
+            this_thread::sleep_for(chrono::milliseconds(50));
+            if (mtx2.try_lock()) {
+                cout << "Thread 1 acquired mtx2\n";
+                mtx2.unlock();
+            }
+            mtx1.unlock();
+            break;
+        }
+        cout << "Thread 1 failed to acquire mtx1, retrying...\n";
+        this_thread::sleep_for(chrono::milliseconds(10));
+    }
+}
+
+void thread2() {
+    while (true) {
+        if (mtx2.try_lock()) {
+            cout << "Thread 2 acquired mtx2\n";
+            this_thread::sleep_for(chrono::milliseconds(50));
+            if (mtx1.try_lock()) {
+                cout << "Thread 2 acquired mtx1\n";
+                mtx1.unlock();
+            }
+            mtx2.unlock();
+            break;
+        }
+        cout << "Thread 2 failed to acquire mtx2, retrying...\n";
+        this_thread::sleep_for(chrono::milliseconds(10));
+    }
+}
+
+int main() {
+    thread t1(thread1);
+    thread t2(thread2);
+    t1.join();
+    t2.join();
+    return 0;
+}
+*/
+
+// Why Use try_lock() Instead of lock()?
+// Non-blocking: The try_lock() function does not block the thread if the mutex is already locked. It immediately returns false.
+// Efficient Retry Mechanism: The code can periodically retry without getting stuck.
+// Avoids Deadlock: Unlike lock(), it helps avoid deadlock situations by allowing the thread to back off and retry later.
+
+
+// Difference between sleep and wait function to delay the execution of task'
+
+// sleep() does not release any mutex or lock while sleeping.
+// wait() releases the associated mutex while waiting, allowing other threads to acquire it.
+
+// sleep() wakes up automatically after the specified time.
+// wait() wakes up only when notified by another thread using notifyOne and notifyAll fun
+
+
+
+// Semaphore is a synchronization mechanism used to control access to a common resource in a concurrent system, such as a multi-threaded environment. It is essentially an integer counter that is used to track the number of available resources.
+
+// Binary Semaphore (Mutex): A special case where the semaphore value can only be 0 or 1, essentially functioning like a mutex.
+// Counting Semaphore: A general-purpose semaphore that can take any non-negative integer value, used to control access to a pool of resources (e.g., limiting the number of threads accessing a limited resource).
+
+// Key Properties of Semaphores:
+
+// 1. Initialization: The semaphore is initialized with a certain value (e.g., 1 for binary semaphore, greater than 1 for counting semaphores).
+// 2. Wait (P Operation): When a thread calls `wait()` (also known as P operation), it decreases the semaphore's value. If the value is greater than 0, the thread continues execution. If the value is 0, the thread waits.
+// 3. Signal (V Operation): When a thread calls `signal()` (also known as V operation), it increases the semaphore's value, potentially allowing a waiting thread to proceed.
+
+// Why Are Semaphores Used?
+// Semaphores are used to manage concurrent access to shared resources, such as:
+// - Limiting the number of threads that can access a resource at the same time.
+// - Preventing race conditions and ensuring mutual exclusion.
+// - Coordinating threads in complex workflows.
+
+/*
+class Printer {
+public:
+    void print(int thread_id) {
+        cout << "Thread " << thread_id << " is using the printer." << endl;
+    }
+};
+
+semaphore sem(1);  // Binary semaphore, initially set to 1 (only one thread can access the printer at a time)
+Printer printer;
+
+void printJob(int thread_id) {
+    sem.acquire();  // Wait operation (P): Decreases the semaphore's count. If the count is 0, thread waits.
+    
+    printer.print(thread_id);  // Critical section: Only one thread can print at a time.
+
+    sem.release();  // Signal operation (V): Increases the semaphore's count, allowing another thread to proceed.
+}
+
+int main() {
+    vector<thread> threads;
+
+    // Creating multiple threads to simulate concurrent print jobs
+    for (int i = 0; i < 5; ++i) {
+        threads.push_back(thread(printJob, i));  // Each thread tries to use the printer
+    }
+
+    // Wait for all threads to finish
+    for (auto& t : threads) {
+        t.join();
+    }
+
+    return 0;
+}
+*/
+
     cout<<"Thread of fun2 is still to be executed";
     
     if (t2.joinable())
