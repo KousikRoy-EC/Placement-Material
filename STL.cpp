@@ -387,6 +387,227 @@ for(int i:v){
     cout<<i<<" ";
   }
 
+
+
+
+
+
+
+
+
+  #include <iostream>
+#include <array>
+#include <vector>
+#include <deque>
+#include <list>
+#include <stack>
+#include <queue>
+#include <set>
+#include <map>
+#include <unordered_map>
+#include <unordered_set>
+#include <algorithm>
+using namespace std;
+
+// Implementing BST from scratch
+
+//       42
+//     /     \
+//    35     56
+//   /  \   /  \
+//  24  36 50  66
+
+struct Node
+{
+  int data;
+  Node *left;
+  Node *right;
+  Node(int val)
+  {
+    data = val;
+    left = NULL;
+    right = NULL;
+  }
+};
+
+void inorderTraversal(Node *root)
+{
+  if (root == NULL)
+  {
+    return;
+  }
+  inorderTraversal(root->left);
+  cout << root->data << " ";
+  inorderTraversal(root->right);
+}
+
+void preorderTraversal(Node *root)
+{
+  if (root == NULL)
+  {
+    return;
+  }
+  cout << root->data << " ";
+  preorderTraversal(root->left);
+  preorderTraversal(root->right);
+}
+
+void postorderTraversal(Node *root)
+{
+  if (root == NULL)
+  {
+    return;
+  }
+  postorderTraversal(root->left);
+  postorderTraversal(root->right);
+  cout << root->data << " ";
+}
+
+void printLevelOrder(Node *root)
+{
+  if (root == NULL)
+  {
+    return;
+  }
+  queue<Node *> q;
+  q.push(root);
+
+  while (!q.empty())
+  {
+    Node *curr = q.front();
+    q.pop();
+    cout << curr->data << " ";
+    if (curr->left != NULL)
+    {
+      q.push(curr->left);
+    }
+    if (curr->right != NULL)
+    {
+      q.push(curr->right);
+    }
+  }
+}
+
+void findNode(Node *root, int key)
+{
+  if (root == NULL)
+  {
+    return;
+  }
+  else if (root->data == key)
+  {
+    cout << "Node Exist" << endl;
+  }
+  else if (root->data > key)
+  {
+    findNode(root->left, key);
+  }
+  else
+  {
+    findNode(root->right, key);
+  }
+}
+
+Node *insertNode(Node *root, int key)
+{
+  if (root == NULL)
+  {
+    Node *curr = new Node(key);
+    return curr;
+  }
+  else if (root->data > key)
+  {
+    root->left = insertNode(root->left, key);
+  }
+  else
+  {
+    root->right = insertNode(root->right, key);
+  }
+  return root;
+}
+
+Node *deleteNode(Node *root, int key)
+{
+  if (root == NULL)
+  {
+    return root;
+  }
+  else if (root->data == key)
+  {
+    if (root->left == NULL && root->right == NULL)
+    {
+      delete root;
+      return NULL;
+    }
+    else if (root->left == NULL)
+    {
+      Node *temp = root->right;
+      delete root;
+      return temp;
+    }
+    else if (root->right == NULL)
+    {
+      Node *temp = root->left;
+      delete root;
+      return temp;
+    }
+    else
+    {
+      Node *temp = root->right;
+      while (temp->left != NULL)
+      {
+        temp = temp->left;
+      }
+      root->data = temp->data;
+      root->right = deleteNode(root->right, temp->data);
+    }
+  }
+  else if (root->data > key)
+  {
+    root->left=deleteNode(root->left, key);
+  }
+  else
+  {
+    root->right=deleteNode(root->right, key);
+  }
+  return root;
+}
+
+int main()
+{
+  Node *root = new Node(42);
+  root->left = new Node(35);
+  root->right = new Node(56);
+  root->left->left = new Node(24);
+  root->left->right = new Node(36);
+  root->right->left = new Node(50);
+  root->right->right = new Node(66);
+
+  // Traversal
+
+  // inorderTraversal(root);
+  // cout << endl;
+  // preorderTraversal(root);
+  // cout << endl;
+  // postorderTraversal(root);
+  // cout << endl;
+  // printLevelOrder(root);
+  // cout<< endl;
+
+  // find node with val Exist or Not
+  // findNode(root, 20);
+
+  // Insert a Node
+  // insertNode(root, 2);
+  // printLevelOrder(root);
+
+  // Delete a Node
+  // deleteNode(root, 35);
+  // printLevelOrder(root);
+
+  return 0;
+}
+
 }
 
 */
