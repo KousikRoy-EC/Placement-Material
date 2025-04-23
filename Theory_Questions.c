@@ -1486,3 +1486,21 @@ int main() {
 }
 */
 
+
+
+/*
+Addition of Binary string
+11101
+01011
+
+sum % 2 gives the binary digit (either 0 or 1) to store at the current position.
+
+sum / 2 gives the carry to pass to the next iteration.
+
+Expression	Purpose
+sum % 2	Get the binary digit to store
+sum / 2	Calculate carry
+s1[i] - '0'	Convert '0' or '1' to 0 or 1
++ '0'	Convert 0 or 1 to '0' or '1'
+
+*/
