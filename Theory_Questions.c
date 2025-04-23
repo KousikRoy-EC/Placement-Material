@@ -1504,3 +1504,9 @@ s1[i] - '0'	Convert '0' or '1' to 0 or 1
 + '0'	Convert 0 or 1 to '0' or '1'
 
 */
+
+
+
+Language	Need to cast malloc?	Why?
+C		void* auto-converts to any pointer type  eg . char* ptr = malloc(100); // ✅ Valid in C
+C++	        void* doesn't auto-convert in C++        eg . char* ptr = (char*)malloc(100); // ✅ Required in C++
