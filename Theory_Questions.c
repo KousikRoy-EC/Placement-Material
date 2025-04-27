@@ -1510,3 +1510,25 @@ s1[i] - '0'	Convert '0' or '1' to 0 or 1
 Language	Need to cast malloc?	Why?
 C		void* auto-converts to any pointer type  eg . char* ptr = malloc(100); // ✅ Valid in C
 C++	        void* doesn't auto-convert in C++        eg . char* ptr = (char*)malloc(100); // ✅ Required in C++
+
+
+
+
+/* Difference in C and CPP structure */
+
+Feature				C Struct		C++ Struct
+Functions inside struct		❌ Not allowed		✅ Allowed
+Constructors/Destructors	❌ Not allowed		✅ Allowed
+Access specifiers		❌ Only public		✅ Public/Private/Protected
+Typename usage			Must write struct	struct not needed on variable
+Inheritance			❌ Not possible		✅ Possible
+
+
+Note - : - The concept of padding is also there for classes and objects in cpp 
+
+/* Difference in Class and Structure in CPP */
+
+In struct, everything is public unless you specify otherwise.
+
+In class, everything is private unless you specify otherwise.
+
