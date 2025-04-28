@@ -1597,3 +1597,30 @@ int* const ptr: Constant pointer to an int. You cannot reassign ptr to a differe
 
 
 
+
+/* Static Mmeber in Class */
+
+Aspect				Static Members				Instance Members
+Storage				Single copy in static/global memory	One copy per object (heap/stack)
+Lifetime			Entire program duration			Duration of the object's lifetime
+Access				Via class name or object		Via object only
+Memory Allocation		Allocated once at program start		Allocated per object creation
+Sharing				Shared across all instances		Unique to each instance
+Function Access			Can only access static members		Can access both static and instance members
+
+example 
+
+class MyClass {
+public:
+    static int staticVar; // Static member variable
+    int instanceVar;      // Instance member variable
+
+    static void staticMethod() { // Static member function
+        std::cout << "Static method called" << std::endl;
+    }
+};
+
+// Definition of static member outside the class
+int MyClass::staticVar = 0;
+
+
