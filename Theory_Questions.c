@@ -1579,4 +1579,21 @@ If the struct has no pointers, then shallow copy is enough!
 
 
 
+/* Pointer to a Constant , Constatnt Pointer , Constant Pointer pointing to a constant*/
+
+Feature			Pointer to Constant (const T* ptr)			Constant Pointer (T* const ptr)
+Syntax			const T* ptr or T const* ptr				T* const ptr
+Data Modifiable?	No (cannot modify *ptr)					Yes (can modify *ptr)
+Pointer Reassignable?	Yes (can change ptr)					No (cannot change ptr)
+Example Declaration	const int* ptr = &a;					int* const ptr = &a;
+Use Case		Read-only data access					Fixed memory location
+
+
+const T* const ptr : Neither the data pointed to nor the pointer itself can be modified.
+
+const int* ptr: Pointer to a constant int. You cannot modify the int through ptr, but you can make ptr point to a different int.
+
+int* const ptr: Constant pointer to an int. You cannot reassign ptr to a different address, but you can modify the int it points to.
+
+
 
