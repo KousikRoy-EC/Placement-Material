@@ -1532,3 +1532,22 @@ In struct, everything is public unless you specify otherwise.
 
 In class, everything is private unless you specify otherwise.
 
+
+/* Difference in malloc and new Keyword for memory allocation on heap */
+
+Note - new keyword is only supported in C++ and not C
+
+
+Feature					malloc							new
+Language				C (also available in C++ for compatibility)		C++ only
+Type					Standard library function (<stdlib.h> or <cstdlib>)	Operator
+Purpose					Allocates raw memory (specified bytes)			Allocates memory and initializes objects (calls constructors)
+Return Type				void* (requires explicit cast in C++)			Typed pointer (no cast needed, type-safe)
+Initialization				No initialization (memory contains garbage)		Calls constructors; can initialize primitives (e.g., new int())
+Deallocation				free()							delete (single object) or delete[] (arrays)
+Error Handling				Returns NULL on failure					Throws std::bad_alloc (or returns NULL with std::nothrow)
+Constructor/Destructor			Does not call constructors or destructors		Calls constructors on allocation, destructors on deallocation
+
+
+
+
