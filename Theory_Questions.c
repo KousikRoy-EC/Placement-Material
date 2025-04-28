@@ -1550,4 +1550,33 @@ Constructor/Destructor			Does not call constructors or destructors		Calls constr
 
 
 
+/* Difference between Shallow and deep copy */
+
+Feature			|	Shallow Copy					|	Deep Copy
+
+Memory			|	Copies pointer value				|	Allocates new memory and copies content
+Relationship		|	Original and copy share memory			|	Completely independent copies
+Speed			|	Faster (only pointer copy)			|	Slower (requires memory allocation)
+Memory Usage		|	Less memory usage				|	More memory usage
+Freeing Memory		|	Free only once					|	Free both individually
+Risk			|	High risk of bugs (double free, data clash)	|	Safer for independent modification
+
+
+void deep_copy(Student *src, Student *dest) {
+    dest->id = src->id;
+    dest->name = (char *)malloc(strlen(src->name) + 1); // Allocate new memory
+    strcpy(dest->name, src->name);                      // Copy content
+}
+
+void shallow_copy(Student *src, Student *dest) {
+    dest->id = src->id;
+    dest->name = src->name;  // Only the pointer is copied
+}
+
+
+Note :  In normal struct copy (s2 = s1), shallow copy happens by default in C.
+If the struct has no pointers, then shallow copy is enough!
+
+
+
 
