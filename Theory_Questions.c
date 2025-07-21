@@ -1625,5 +1625,8 @@ int MyClass::staticVar = 0;
 
 
 
+Register Keyword with global variable : 
+
+No, you cannot use the register keyword with global variables in C.
 
 
