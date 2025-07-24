@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "d:/Placement-Material",
-      "program": "d:/Placement-Material/build/Debug/outDebug",
+      "cwd": "c:/Users/kaush/OneDrive/Desktop/Placement-Material",
+      "program": "c:/Users/kaush/OneDrive/Desktop/Placement-Material/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [

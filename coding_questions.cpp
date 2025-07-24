@@ -1487,9 +1487,3 @@ int main(){
 
 */
 
-// peak element in an array greater than neighbour
-
-
-// triplet sum in an array
-
-// majority element in an array
