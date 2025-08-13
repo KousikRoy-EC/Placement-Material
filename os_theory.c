@@ -472,7 +472,7 @@ Pipes are the simplest form of IPC. A pipe is a unidirectional (one-way) communi
       Synchronized: The OS handles it. The `read()` call will wait if the pipe is empty.
   Best For: Simple, one-way communication between a parent and child process, like redirecting the output of one command to the input of another (`ls -l | grep .c`).
 
-#### Example Code with Comments
+# Example Code with Comments
 
 #include <stdio.h>
 #include <unistd.h>
@@ -573,4 +573,355 @@ It must always be used in conjunction with a mutex. A thread locks the mutex, ch
 This atomically releases the mutex and puts the thread to sleep. Another thread can later change the data, lock the mutex, and then call `signal()` or `broadcast()` on the condition variable to wake up the waiting thread(s).
 
 
+------>     Memory Management in C    ------
 
+ Stack Memory
+The stack is a region of memory that stores temporary variables created by functions. It operates on a Last-In-First-Out (LIFO) principle.
+
+Characteristics:
+- Automatic management: Variables are automatically created when entering a function and destroyed when exiting
+- Fast access: Direct memory access through stack pointer manipulation
+- Limited size: Typically 1-8 MB per thread
+- Stores: Function parameters, return addresses, local variables
+
+Example:
+
+void function1() {
+    int a = 10;        // Allocated on stack
+    char buffer[100];  // Allocated on stack
+    function2();       // Stack grows
+}  // Variables automatically deallocated when function ends
+
+void function2() {
+    int b = 20;        // New stack frame created
+    return;            // Stack frame destroyed
+}
+
+
+Stack Layout:
+
+High Memory Address
+|------------------|
+| function2 frame  |  <- Current Stack Pointer
+|   int b = 20     |
+|------------------|
+| function1 frame  |
+|   char buffer[]  |
+|   int a = 10     |
+|------------------|
+| Return address   |
+|------------------|
+Low Memory Address
+
+
+ Heap Memory
+The heap is a region for dynamic memory allocation where data can be allocated and deallocated in any order.
+
+Characteristics:
+- Manual management: Programmer must explicitly allocate and free memory
+- Slower access: Requires pointer dereferencing and memory management overhead
+- Large size: Limited only by available system memory
+- Stores: Dynamic data structures, large objects
+
+Example:
+
+void heapExample() {
+    // Dynamic allocation on heap
+    int* ptr = (int*)malloc(sizeof(int) * 100);
+    
+    if (ptr != NULL) {
+        ptr[0] = 42;  // Accessing heap memory
+        ptr[99] = 100;
+        
+        // Must manually free
+        free(ptr);
+    }
+}
+
+## Dynamic vs Static Memory Allocation
+
+ Static Memory Allocation
+Memory is allocated at compile time and remains fixed throughout program execution.
+
+Characteristics:
+- Compile-time allocation: Size determined before program runs
+- Fixed size: Cannot be changed during execution
+- Automatic management: No need for malloc/free
+- Fast access: Direct memory access
+
+Example:
+
+// Global static allocation
+int globalArray[1000];  // 4000 bytes allocated at compile time
+
+void staticExample() {
+    // Local static allocation
+    static int counter = 0;     // Allocated once, persists across calls
+    int localArray[50];         // Stack allocation, fixed size
+    
+    counter++;
+}
+
+ Dynamic Memory Allocation
+Memory is allocated at runtime based on program needs.
+
+Characteristics:
+- Runtime allocation: Size can be determined during execution
+- Variable size: Can allocate exactly what's needed
+- Manual management: Requires explicit allocation/deallocation
+- Flexible: Can grow/shrink as needed
+
+Example:
+
+void dynamicExample() {
+    int size;
+    printf("Enter array size: ");
+    scanf("%d", &size);
+    
+    // Dynamic allocation based on user input
+    int* dynamicArray = (int*)malloc(size * sizeof(int));
+    
+    if (dynamicArray != NULL) {
+        // Use the array
+        for (int i = 0; i < size; i++) {
+            dynamicArray[i] = i * 2;
+        }
+        
+        // Resize if needed
+        dynamicArray = (int*)realloc(dynamicArray, size * 2 * sizeof(int));
+        
+        free(dynamicArray);  // Must free manually
+    }
+}
+
+
+## Fragmentation
+
+Fragmentation occurs when memory becomes divided into small, unusable pieces.
+
+ Internal Fragmentation
+Wasted space within allocated memory blocks.
+
+Causes:
+- Fixed-size allocation schemes
+- Padding for alignment requirements
+- Allocating more memory than requested
+
+Example:
+
+// If allocator uses 64-byte blocks
+char* ptr = malloc(10);  // Only 10 bytes needed
+// But 64 bytes allocated, 54 bytes wasted (internal fragmentation)
+
+Visual representation:
+
+|-- 64-byte block --|
+|used(10)|waste(54) |
+
+
+ External Fragmentation
+Free memory exists but is scattered in small, non-contiguous chunks.
+
+Example scenario:
+
+void fragmentationDemo() {
+    char* ptr1 = malloc(100);  // Block A
+    char* ptr2 = malloc(100);  // Block B  
+    char* ptr3 = malloc(100);  // Block C
+    
+    free(ptr2);  // Frees middle block
+    
+    // Now we have: [A][FREE(100)][C]
+    // If we need 200 bytes, we can't allocate even though
+    // total free space might be available
+    char* ptr4 = malloc(200);  // Might fail due to fragmentation
+}
+
+Memory layout:
+
+Before fragmentation:
+|Block A(100)|Block B(100)|Block C(100)|Free Space|
+
+After freeing Block B:
+|Block A(100)|Free(100)   |Block C(100)|Free Space|
+             ↑ Can't use for large allocation
+
+
+ Solutions to Fragmentation:
+
+1. Compaction: Moving allocated blocks to eliminate gaps
+2. Buddy System: Using power-of-2 sized blocks
+3. Memory Pools: Pre-allocating fixed-size chunks
+
+## Memory Protection and Segmentation
+
+ Memory Protection
+Mechanisms to prevent unauthorized access to memory regions.
+
+Protection Mechanisms:
+
+1. Base and Limit Registers
+
+// Each process has base and limit registers
+struct process_memory {
+    void* base_address;     // Starting address
+    size_t limit;          // Maximum offset
+};
+
+// Hardware checks on every memory access:
+// if (address < base || address >= base + limit)
+//     generate_protection_fault();
+```
+
+2. Protection Bits
+```c
+// Memory pages have protection attributes
+typedef enum {
+    READ_ONLY    = 0x1,
+    READ_WRITE   = 0x3,
+    EXECUTE      = 0x4,
+    USER_ACCESS  = 0x8
+} protection_flags_t;
+```
+
+ Segmentation
+Dividing program memory into logical segments with different purposes.
+
+Common Segments:
+- Code Segment: Contains executable instructions
+- Data Segment: Contains global and static variables
+- Stack Segment: Contains local variables and function calls
+- Heap Segment: Contains dynamically allocated memory
+
+Example Program Layout:
+
+// Global variables (Data segment)
+int globalVar = 42;
+static int staticVar = 100;
+
+// Function code (Code segment)
+void exampleFunction() {
+    // Local variables (Stack segment)
+    int localVar = 10;
+    char buffer[256];
+    
+    // Dynamic allocation (Heap segment)
+    int* heapVar = malloc(sizeof(int));
+    *heapVar = 20;
+    
+    free(heapVar);
+}
+
+int main() {
+    exampleFunction();
+    return 0;
+}
+
+
+Memory Layout with Segmentation:
+
+High Memory
+|-------------------|
+| Stack Segment     | ← Growing downward
+| (Local variables) |
+|-------------------|
+| Free Space        |
+|-------------------|
+| Heap Segment      | ← Growing upward
+| (malloc'd memory) |
+|-------------------|
+| Data Segment      |
+| (Global vars)     |
+|-------------------|
+| Code Segment      |
+| (Program code)    |
+|-------------------|
+Low Memory
+
+
+
+-------> what is paging in os <--------
+
+Paging is a memory management scheme used by operating systems to eliminate the need for contiguous allocation of physical memory. It allows processes to be stored in non-contiguous memory blocks, optimizing memory utilization and enabling features like virtual memory.
+
+---
+
+### Core Concepts
+1. Pages and Frames:
+   - Logical Memory (Virtual Memory): Divided into fixed-size blocks called pages.
+   - Physical Memory (RAM): Divided into fixed-size blocks called frames, matching page sizes.
+   - *Example*: If a system uses 4KB pages, both logical and physical memory are split into 4KB chunks.
+
+2. Page Table:
+   - A data structure maintained by the OS for each process.
+   - Maps logical page numbers to physical frame numbers.
+   - Each entry contains metadata (e.g., validity, permissions).
+
+3. Address Translation:
+   - A logical address is split into:
+     - Page Number: Indexes the page table.
+     - Offset: Specifies the location within the page/frame.
+   - The OS translates the logical address to a physical address using the page table.
+
+---
+
+### How Paging Manages Memory
+#### Step-by-Step Process
+1. Process Initialization:
+   - When a process starts, the OS allocates frames in physical memory.
+   - The page table is initialized with mappings between logical pages and physical frames.
+
+2. Address Translation:
+   - Suppose a process references a logical address `0x12345`.
+   - The OS splits this into:
+     - Page Number: `0x12` (determines which page table entry to use).
+     - Offset: `0x345` (location within the page).
+   - The page table entry for page `0x12` returns a frame number (e.g., `0x56`).
+   - The physical address is calculated as:  
+     `(Frame Number × Page Size) + Offset` → `(0x56 × 4096) + 0x345`.
+
+3. Handling Page Faults:
+   - If a process accesses a page not in physical memory (invalid bit set):
+     - Trap to OS: The CPU triggers a page fault interrupt.
+     - OS Actions:
+       1. Check if the access is valid (e.g., no permission violation).
+       2. Find a free frame (or evict a page via algorithms like LRU).
+       3. Load the required page from disk into the free frame.
+       4. Update the page table with the new mapping.
+       5. Resume the interrupted instruction.
+
+4. Memory Protection:
+   - Page table entries include read/write/execute permissions.
+   - Attempts to violate these trigger protection faults.
+
+---
+
+### Advantages of Paging
+1. Eliminates External Fragmentation:
+   - Processes can occupy non-contiguous frames, avoiding wasted gaps between allocations.
+
+2. Simplifies Allocation:
+   - Any free frame can be assigned to a process, reducing allocation complexity.
+
+3. Enables Virtual Memory:
+   - Pages can reside on disk (swap space) when not actively used, allowing processes to exceed physical RAM limits.
+
+4. Isolation and Security:
+   - Page tables enforce memory isolation between processes; one process cannot access another’s pages.
+
+---
+
+### Challenges & Solutions
+1. Internal Fragmentation:
+   - Wasted space within the last page of a process (fixed page size).
+   - *Mitigation*: Use smaller page sizes (trade-off with increased page table size).
+
+2. Page Table Overhead:
+   - Large page tables consume significant memory.
+   - *Solutions*:
+     - Multi-Level Paging: Hierarchical page tables (e.g., 2-level for 32-bit systems).
+     - Inverted Page Tables: Single table shared across processes (used in 64-bit systems).
+     - Translation Lookaside Buffer (TLB): Hardware cache storing recent translations to reduce page table lookups.
+
+3. Page Replacement Algorithms:
+   - Deciding which page to evict during a page fault (e.g., FIFO, LRU, Clock Algorithm).
