@@ -445,7 +445,8 @@ A thread moves through several states from its creation to its termination.
 5) Terminated (Dead): The thread has completed its execution or has otherwise been terminated. It cannot be run again.
 
 
-Starvation typically occurs in scheduling algorithms where a flawed or biased selection process can cause certain processes to be overlooked indefinitely. The most common cause is priority-based scheduling.
+Starvation typically occurs in scheduling algorithms where a flawed or biased selection process can cause certain 
+processes to be overlooked indefinitely. The most common cause is priority-based scheduling.
 
 Imagine a system where high-priority processes are always executed before low-priority ones. If there is a continuous stream of high-priority tasks entering the system, the scheduler will always be busy serving them. 
 A low-priority process waiting in the queue will never get its turn, even though it's ready to run. This leads to starvation, where the low-priority process is starved of CPU time and never gets executed.
@@ -462,7 +463,7 @@ other for security and stability. IPC provides a safe and structured way to brea
 
 1. Pipes 
 -----------
-
+ 
 Pipes are the simplest form of IPC. A pipe is a unidirectional (one-way) communication channel that connects two related processes (usually a parent and child). Data is written to one end and read from the other as a continuous stream of bytes.
 
   Key Characteristics:
@@ -925,3 +926,44 @@ Paging is a memory management scheme used by operating systems to eliminate the 
 
 3. Page Replacement Algorithms:
    - Deciding which page to evict during a page fault (e.g., FIFO, LRU, Clock Algorithm).
+
+
+
+-----------------  What is Deadlock in OS?  -----------------
+
+Deadlock in operating systems is a situation where a set of processes are blocked because each process is holding a resource and waiting for another resource held by another process. In other words, a deadlock occurs when two or more processes are unable to proceed because each is waiting for the other to release a resource.
+
+Conditions for Deadlock
+
+For a deadlock to occur, the following four conditions must hold simultaneously:
+1. **Mutual Exclusion**: At least one resource must be held in a non-shareable mode.
+2. **Hold and Wait**: A process holding at least one resource is waiting to acquire additional resources.
+3. **No Preemption**: Resources cannot be forcibly taken from a process holding them.
+4. **Circular Wait**: There must be a circular chain of processes, each waiting for a resource held by the next process in the chain.
+
+Deadlock Prevention Strategies
+
+1. Resource Allocation Graph : Use a graph to represent resource allocation and requests. If a request would create a cycle, it is denied.
+2. Banker's Algorithm : A dynamic approach that checks resource availability before allocation, ensuring the system remains in a safe state.
+3. Avoidance of Hold and Wait : Require processes to request all resources at once, preventing hold and wait conditions.
+
+Deadlock Prevention Techniques
+
+1. Attacking Mutual Exclusion
+This is often not possible. Some resources, like printers or files being written to, are inherently non-sharable. Forcing them to be sharable could lead to data corruption. However, for resources that can be managed (e.g., read-only files), sharing can be allowed.
+
+2. Attacking Hold and Wait
+To prevent this condition, you can enforce a rule that a process must either request all its required resources at once or release all its currently held resources before requesting new ones.
+
+Method 1: Request all resources initially. A process must acquire all the resources it will ever need before it begins execution. This can lead to low resource utilization.
+
+Method 2: Release resources before new requests. A process must release any resources it's holding before it can request any new ones.
+
+3. Attacking No Preemption
+If a process holding some resources requests another resource that cannot be immediately allocated to it, the OS could preempt (take away) all resources currently held by this process. These preempted resources are added to the list of resources for which the process is waiting. The process will be restarted only when it can regain its old resources, as well as the new ones it is requesting. This is often difficult to implement and may not be suitable for all resource types.
+
+4. Attacking Circular Wait 
+This is the most practical and commonly used deadlock prevention technique. The strategy is to impose a total ordering of all resource types and require that each process requests resources in an increasing order of enumeration.
+
+For example, if the resource order is R_1,R_2,R_3, a process can request R_1 and then R_2, but it cannot request R_2 and then R_1. This ensures that a circular dependency can never form.
+ 

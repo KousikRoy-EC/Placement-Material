@@ -1628,3 +1628,33 @@ int MyClass::staticVar = 0;
 Register Keyword with global variable : 
 
 No, you cannot use the register keyword with global variables in C.
+
+
+
+
+while dealing with function many a times we pass array or any other data structure using pointers.
+
+void changePointer(int *p) {
+    int b = 50;
+    p = &b;   // changes only local copy of pointer
+}
+
+void changeReference(int &r) {
+    r = 50;   // changes caller's variable itself
+}
+
+int main(){
+    int a = 10;
+    changePointer(&a);
+    // a is still 10, because changePointer only modified its local copy of the pointer
+
+    changeReference(a);
+    // a is now 50, because changeReference modified the actual variable via reference
+    return 0;
+}
+
+Use & when you want a clean alias instead of *.
+
+Passing a pointer copies the pointer; dereferencing changes caller’s data, but reassigning doesn’t — unless you pass pointer-to-pointer or reference-to-pointer.
+
+
