@@ -1658,3 +1658,28 @@ Use & when you want a clean alias instead of *.
 Passing a pointer copies the pointer; dereferencing changes caller’s data, but reassigning doesn’t — unless you pass pointer-to-pointer or reference-to-pointer.
 
 
+---------------- Interview Questions : --------------
+
+Given a string st="st,12,rr,23,io,11"
+print number in one line and char in another line
+
+frquency of a element in an array
+
+operator overloading
+
+deadlock
+
+overriding
+
+pointer arithemeatic
+
+given a hexadeciaml no 0x12345678
+reverse the bits without/with using bitwise operator
+
+given a hexadeciaml no 0x1234
+swap the bits 2 amnd 3 without/with using bitwise operator
+
+how will you implement map of c++ in class
+
+given a string "Hello world" return thr char which appears more no of time and the first occurence in this case output is l
+
