@@ -2228,3 +2228,21 @@ print_binary(num);
 
 
 
+
+
+
+
+
+array decay : 
+
+Think of an array like a book with pages (elements).
+When you refer to it directly, C++ gives you the address of the first page,
+not a copy of the whole book — that’s array decay.
+
+float by default is double in size in cpp so we need to add f/F at end 
+
+function and constructor has no role in structure size it has separate code segment
+
+
+
+
