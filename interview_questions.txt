@@ -176,7 +176,7 @@ int main(){
 
 
 
-// structure is a group of variables of different data types represented by a single name.
+// Structure is a group of variables of different data types represented by a single name.
 
 /*
 struct Kousik_Marksheet
@@ -1507,8 +1507,8 @@ s1[i] - '0'	Convert '0' or '1' to 0 or 1 as ascii character of 0 is 48 and 1 is 
 
 
 
-Language	Need to cast malloc?	Why?
-C		void* auto-converts to any pointer type  eg . char* ptr = malloc(100); // ✅ Valid in C
+Language	Need to cast malloc?	                    Why?
+C		    void* auto-converts to any pointer type  eg . char* ptr = malloc(100); // ✅ Valid in C
 C++	        void* doesn't auto-convert in C++        eg . char* ptr = (char*)malloc(100); // ✅ Required in C++
 
 
@@ -1516,12 +1516,12 @@ C++	        void* doesn't auto-convert in C++        eg . char* ptr = (char*)mal
 
 /* Difference in C and CPP structure */
 
-Feature				C Struct		C++ Struct
+Feature				        C Struct		    C++ Struct
 Functions inside struct		❌ Not allowed		✅ Allowed
 Constructors/Destructors	❌ Not allowed		✅ Allowed
-Access specifiers		❌ Only public		✅ Public/Private/Protected
-Typename usage			Must write struct	struct not needed on variable
-Inheritance			❌ Not possible		✅ Possible
+Access specifiers		    ❌ Only public		✅ Public/Private/Protected
+Typename usage			    Must write struct	  struct not needed on variable
+Inheritance			        ❌ Not possible		✅ Possible
 
 
 Note - : - The concept of padding is also there for classes and objects in cpp 
@@ -1538,27 +1538,27 @@ In class, everything is private unless you specify otherwise.
 Note - new keyword is only supported in C++ and not C
 
 
-Feature					malloc							new
-Language				C (also available in C++ for compatibility)		C++ only
-Type					Standard library function (<stdlib.h> or <cstdlib>)	Operator
-Purpose					Allocates raw memory (specified bytes)			Allocates memory and initializes objects (calls constructors)
-Return Type				void* (requires explicit cast in C++)			Typed pointer (no cast needed, type-safe)
-Initialization				No initialization (memory contains garbage)		Calls constructors; can initialize primitives (e.g., new int())
-Deallocation				free()							delete (single object) or delete[] (arrays)
-Error Handling				Returns NULL on failure					Throws std::bad_alloc (or returns NULL with std::nothrow)
-Constructor/Destructor			Does not call constructors or destructors		Calls constructors on allocation, destructors on deallocation
+Feature					malloc							                        new
+Language				C (also available in C++ for compatibility)		        C++ only
+Type					Standard library function (<stdlib.h> or <cstdlib>)	    Operator
+Purpose					Allocates raw memory (specified bytes)			        Allocates memory and initializes objects (calls constructors)
+Return Type				void* (requires explicit cast in C++)			        Typed pointer (no cast needed, type-safe)
+Initialization			No initialization (memory contains garbage)		        Calls constructors; can initialize primitives (e.g., new int())
+Deallocation			free()							                        delete (single object) or delete[] (arrays)
+Error Handling			Returns NULL on failure					                Throws std::bad_alloc (or returns NULL with std::nothrow)
+Constructor/Destructor	Does not call constructors or destructors		        Calls constructors on allocation, destructors on deallocation
 
 
 
 /* Difference between Shallow and deep copy */
 
-Feature			|	Shallow Copy					|	Deep Copy
+Feature			|	Shallow Copy					            |	Deep Copy
 
-Memory			|	Copies pointer value				|	Allocates new memory and copies content
-Relationship		|	Original and copy share memory			|	Completely independent copies
-Speed			|	Faster (only pointer copy)			|	Slower (requires memory allocation)
-Memory Usage		|	Less memory usage				|	More memory usage
-Freeing Memory		|	Free only once					|	Free both individually
+Memory			|	Copies pointer value				        |	Allocates new memory and copies content
+Relationship	|	Original and copy share memory			    |	Completely independent copies
+Speed			|	Faster (only pointer copy)			        |	Slower (requires memory allocation)
+Memory Usage	|	Less memory usage				            |	More memory usage
+Freeing Memory	|	Free only once					            |	Free both individually
 Risk			|	High risk of bugs (double free, data clash)	|	Safer for independent modification
 
 
@@ -1658,3 +1658,569 @@ Use & when you want a clean alias instead of *.
 Passing a pointer copies the pointer; dereferencing changes caller’s data, but reassigning doesn’t — unless you pass pointer-to-pointer or reference-to-pointer.
 
 
+---------------- Interview Questions : --------------
+
+Given a string st="st,12,rr,23,io,11"
+print number in one line and char in another line
+
+frquency of a element in an array
+
+operator overloading
+
+deadlock
+
+overriding
+
+pointer arithemeatic
+
+given a hexadeciaml no 0x12345678
+reverse the bits without/with using bitwise operator
+
+given a hexadeciaml no 0x1234
+swap the bits 2 amnd 3 without/with using bitwise operator
+
+how will you implement map of c++ in class
+
+given a string "Hello world" return thr char which appears more no of time and the first occurence in this case output is l
+
+
+
+
+
+
+
+
+
+# Complete Guide to Hexadecimal and Bit Manipulation in C
+
+## 1. Understanding Hexadecimal Numbers
+
+### What is Hexadecimal?
+- **Base 16** number system (compared to decimal which is base 10)
+- Uses digits: 0-9 and letters A-F (where A=10, B=11, C=12, D=13, E=14, F=15)
+- Each hex digit represents exactly 4 bits
+- Prefixed with `0x` in C programming
+
+### Hex to Decimal Conversion
+```
+0x1A = 1×16¹ + 10×16⁰ = 16 + 10 = 26 (decimal)
+0xFF = 15×16¹ + 15×16⁰ = 240 + 15 = 255 (decimal)
+0x100 = 1×16² + 0×16¹ + 0×16⁰ = 256 (decimal)
+```
+
+### Binary to Hex Conversion (Easy Way!)
+```
+Binary: 1101 1010 1111 0001
+Group:   D    A    F    1
+Hex:    0xDAF1
+```
+
+Each group of 4 binary digits = 1 hex digit:
+- 0000 = 0    0100 = 4    1000 = 8    1100 = C
+- 0001 = 1    0101 = 5    1001 = 9    1101 = D  
+- 0010 = 2    0110 = 6    1010 = A    1110 = E
+- 0011 = 3    0111 = 7    1011 = B    1111 = F
+
+## 2. Data Types and Their Hex Representation
+
+### Common Data Type Sizes
+```c
+char:        1 byte  = 8 bits  = 2 hex digits  (0x00 to 0xFF)
+short:       2 bytes = 16 bits = 4 hex digits  (0x0000 to 0xFFFF)
+int:         4 bytes = 32 bits = 8 hex digits  (0x00000000 to 0xFFFFFFFF)
+long long:   8 bytes = 64 bits = 16 hex digits (0x0000000000000000 to 0xFFFFFFFFFFFFFFFF)
+```
+
+### Practical Examples
+```c
+#include <stdio.h>
+
+int main() {
+    unsigned char  c = 0xFF;        // 255 in decimal
+    unsigned short s = 0x1234;      // 4660 in decimal  
+    unsigned int   i = 0xDEADBEEF;  // 3735928559 in decimal
+    
+    printf("char: 0x%02X = %u\n", c, c);
+    printf("short: 0x%04X = %u\n", s, s);  
+    printf("int: 0x%08X = %u\n", i, i);
+    
+    return 0;
+}
+```
+
+## 3. Bit Manipulation Operations
+
+### Basic Bitwise Operators
+
+#### AND (&) - Sets bit to 1 if both bits are 1
+```c
+0x0F & 0x3C = ?
+0000 1111  (0x0F)
+0011 1100  (0x3C)
+---------
+0000 1100  (0x0C = 12)
+```
+
+**Use case: Masking/Extracting specific bits**
+```c
+// Extract lower 4 bits
+unsigned int num = 0x12345678;
+unsigned int lower4 = num & 0x0F;  // Result: 0x08
+```
+
+#### OR (|) - Sets bit to 1 if either bit is 1
+```c
+0x0F | 0x30 = ?
+0000 1111  (0x0F)
+0011 0000  (0x30)
+---------
+0011 1111  (0x3F = 63)
+```
+
+**Use case: Setting specific bits**
+```c
+// Set bit 4 (counting from 0)
+unsigned int num = 0x10;
+num |= (1 << 4);  // num becomes 0x30
+```
+
+#### XOR (^) - Sets bit to 1 if bits are different
+```c
+0x0F ^ 0x55 = ?
+0000 1111  (0x0F)
+0101 0101  (0x55)
+---------
+0101 1010  (0x5A = 90)
+```
+
+**Use case: Toggling bits, swapping without temp variable**
+```c
+// Toggle bit 3
+unsigned int num = 0x10;
+num ^= (1 << 3);  // Toggles bit 3
+```
+
+#### NOT (~) - Flips all bits
+```c
+~0x0F = 0xFFFFFFF0 (for 32-bit int)
+```
+
+#### Left Shift (<<) - Shifts bits left, fills with zeros
+```c
+0x03 << 2 = ?
+0000 0011  → shift left by 2 → 0000 1100 = 0x0C
+```
+
+**Use case: Multiply by powers of 2, create bit masks**
+```c
+// Multiply by 8 (2³)
+int num = 5;
+int result = num << 3;  // 5 * 8 = 40
+```
+
+#### Right Shift (>>) - Shifts bits right
+```c
+0x0C >> 2 = ?
+0000 1100  → shift right by 2 → 0000 0011 = 0x03
+```
+
+**Use case: Divide by powers of 2**
+```c
+// Divide by 4 (2²)
+int num = 20;
+int result = num >> 2;  // 20 / 4 = 5
+```
+
+## 4. Common Bit Field Operations
+
+### Check if a bit is set
+```c
+#define IS_BIT_SET(num, bit) ((num) & (1 << (bit)))
+
+unsigned int flags = 0x15;  // Binary: 0001 0101
+if (IS_BIT_SET(flags, 2)) {
+    printf("Bit 2 is set\n");  // This will print
+}
+```
+
+### Set a specific bit
+```c
+#define SET_BIT(num, bit) ((num) |= (1 << (bit)))
+
+unsigned int flags = 0x10;  // Binary: 0001 0000
+SET_BIT(flags, 3);          // Now: 0001 1000 = 0x18
+```
+
+### Clear a specific bit
+```c
+#define CLEAR_BIT(num, bit) ((num) &= ~(1 << (bit)))
+
+unsigned int flags = 0x18;  // Binary: 0001 1000  
+CLEAR_BIT(flags, 3);        // Now: 0001 0000 = 0x10
+```
+
+### Toggle a specific bit
+```c
+#define TOGGLE_BIT(num, bit) ((num) ^= (1 << (bit)))
+
+unsigned int flags = 0x10;  // Binary: 0001 0000
+TOGGLE_BIT(flags, 2);       // Now: 0001 0100 = 0x14
+```
+
+### Extract a range of bits
+```c
+// Extract bits from position 'start' to 'end'
+unsigned int extract_bits(unsigned int num, int start, int end) {
+    int len = end - start + 1;
+    unsigned int mask = (1 << len) - 1;  // Create mask with 'len' 1s
+    return (num >> start) & mask;
+}
+
+// Example: Extract bits 4-7 from 0x12F4
+// Result: (0x12F4 >> 4) & 0x0F = 0x2F & 0x0F = 0x0F
+```
+
+## 5. Real-World Applications
+
+### Status Flags Example
+```c
+#define FLAG_READY     (1 << 0)  // 0x01
+#define FLAG_ERROR     (1 << 1)  // 0x02  
+#define FLAG_COMPLETE  (1 << 2)  // 0x04
+#define FLAG_TIMEOUT   (1 << 3)  // 0x08
+
+unsigned int status = 0x00;
+
+// Set ready flag
+status |= FLAG_READY;
+
+// Check if error occurred
+if (status & FLAG_ERROR) {
+    printf("Error detected!\n");
+}
+
+// Clear timeout flag
+status &= ~FLAG_TIMEOUT;
+```
+
+### RGB Color Manipulation
+```c
+// RGB: Red(8 bits) Green(8 bits) Blue(8 bits)
+unsigned int color = 0xFF5733;  // Orange color
+
+// Extract individual components
+unsigned int red   = (color >> 16) & 0xFF;  // 0xFF
+unsigned int green = (color >> 8)  & 0xFF;  // 0x57
+unsigned int blue  = color & 0xFF;          // 0x33
+
+// Create color from components
+unsigned int new_color = (red << 16) | (green << 8) | blue;
+```
+
+### Bit Packing (Memory Optimization)
+```c
+// Pack multiple small values into one integer
+struct {
+    unsigned int age    : 7;   // 0-127 (7 bits)
+    unsigned int gender : 1;   // 0-1   (1 bit)
+    unsigned int score  : 10;  // 0-1023 (10 bits)
+    unsigned int level  : 4;   // 0-15  (4 bits)
+    // Total: 22 bits instead of 4 separate ints (128 bits)
+} player_data;
+```
+
+## 6. Common Interview Questions & Solutions
+
+### Q1: Swap two numbers without temporary variable
+```c
+void swap_xor(int *a, int *b) {
+    *a = *a ^ *b;
+    *b = *a ^ *b;  // *b = (*a ^ *b) ^ *b = *a
+    *a = *a ^ *b;  // *a = (*a ^ *b) ^ *a = *b
+}
+```
+
+### Q2: Count number of set bits (1s)
+```c
+int count_set_bits(unsigned int n) {
+    int count = 0;
+    while (n) {
+        count += n & 1;  // Add 1 if LSB is set
+        n >>= 1;         // Shift right
+    }
+    return count;
+}
+
+// Brian Kernighan's algorithm (more efficient)
+int count_set_bits_fast(unsigned int n) {
+    int count = 0;
+    while (n) {
+        n &= (n - 1);  // Removes rightmost set bit
+        count++;
+    }
+    return count;
+}
+```
+
+### Q3: Check if number is power of 2
+```c
+bool is_power_of_2(unsigned int n) {
+    return n && !(n & (n - 1));
+}
+// Logic: Power of 2 has only one bit set
+// n = 8 = 1000, n-1 = 7 = 0111, n & (n-1) = 0000 = 0
+```
+
+### Q4: Find the only non-duplicate in array
+```c
+int find_single(int arr[], int size) {
+    int result = 0;
+    for (int i = 0; i < size; i++) {
+        result ^= arr[i];  // XOR all elements
+    }
+    return result;  // Duplicates cancel out, single remains
+}
+```
+
+### Q5: Reverse bits in an integer
+```c
+unsigned int reverse_bits(unsigned int n) {
+    unsigned int result = 0;
+    for (int i = 0; i < 32; i++) {
+        result = (result << 1) | (n & 1);
+        n >>= 1;
+    }
+    return result;
+}
+```
+
+## 7. Debugging Tips
+
+### Print binary representation
+```c
+void print_binary(unsigned int n) {
+    for (int i = 31; i >= 0; i--) {
+        printf("%d", (n >> i) & 1);
+        if (i % 4 == 0) printf(" ");  // Space every 4 bits
+    }
+    printf("\n");
+}
+```
+
+### Useful printf format specifiers
+```c
+printf("Decimal: %d\n", num);
+printf("Hex (lowercase): 0x%x\n", num);  
+printf("Hex (uppercase): 0x%X\n", num);
+printf("Hex (padded): 0x%08X\n", num);   // Pad with zeros to 8 digits
+printf("Binary: ");
+print_binary(num);
+```
+
+
+
+// To Compile source code we can use two ways
+
+// 1) CC test.c
+// 2) CC test.c -0 new_name
+
+
+// Can we write C program without main function :
+
+// yes but we need to compile src file differently as compiler by default consider main as starting point of program 
+// cc -nostartfiles test.c
+
+
+// Can we write C program without any function :
+
+// No
+
+
+// Compile time erro happens mainly due to syntax or structure of program.
+
+// Run time error happens due to seg fault , bus err within our code etc;
+
+
+// Advance Syntax to declare a variable
+
+// Storage class | type qualifier | size type | sign type | data type | variable name
+// auto            const           short / long   signed       int 
+// static          volatile        long long      unsigned     float
+// extern                                                      charw
+// register
+
+
+
+// size of all data type is in bytes only not bits
+
+// 1 byte = 8 bit
+
+// 32 bit processor means it can read or write 4 byte of data simultaneouly
+
+// in hexadecimal no each no represent 4 bit of size so 0x1234 is 2 byte no
+
+// ASCII reference :
+
+// a: 97 - z: 122
+// A: 65 - Z: 90
+// 0: 48 - 9: 57
+
+
+// converting small case letter to capital letter we will do 
+
+// char var = 'a';
+// var = var - 32;  // OP - A 
+
+// char var = 'A';
+// var = var + 32;  // OP -a
+
+
+
+// Find no is even or odd 
+
+// int a = 32;
+// int r = a & 1;
+
+// if(r==1){
+//     printf("ODD");
+// }
+// else{
+//     printf("Even");
+// }
+
+
+// To find no is power of two or not 
+
+// int res = n & (n-1)
+
+// if(res == 0 ) then true;
+
+
+// To Swap adjacent nibble of a given no or char
+
+// for char there is 8bit only so we can directly do 
+
+// num = n1 >> 4 | n1 << 4;
+
+// To Clear a particular bit of a given no 
+
+// num = num & ~(1<<pos)
+
+
+// To set a particular bit of a given no 
+
+// num = num | 1 << pos
+
+
+// Toggle a particular bit in given no;
+
+
+// num = num ^ (1<<pos);
+
+
+// printf function return printable char count '\0'
+
+// printf("Hello");
+
+// this will return 6 
+
+
+
+// To print binary of a decimal no given;
+
+// #include <stdio.h>
+
+// int main(){
+
+//     unsigned int var;
+//     scanf("%u",&var);
+//     printf("The No entered is : %d \n",var);
+
+//     printf("The Binary represntaion of No : ");
+
+//     for(int i=31;i>=0;i--){
+//         printf("%d", (var>>i) & 1 );
+//         if(i%8==0){
+//             printf(" ");
+//         }
+//     }
+//     return 0;
+// }
+
+
+// To reverse bits of a given no uisng bitwise operator
+
+// #include <stdio.h>
+
+// int main(){
+
+//     unsigned int var;
+//     scanf("%u",&var);
+//     printf("The No entered is : %d \n",var);
+
+//     for(int i=31,s=0;s<i;s++,i--){
+//        int L = ((var >> i) & 1);
+//        int R = ((var >> s) & 1);
+
+//        if(L!=R){
+//         var = var ^ (1 << i);
+//         var = var ^ (1 << s);
+//        }
+//     }
+
+//     printf("After Reversal the no becomes : %d \n",var);
+
+//     return 0;
+// }
+
+
+// swap adjacent nibble or swap two particular nibble 
+
+// #include <stdio.h>
+
+// int main(){ 
+//     unsigned int var;
+//     scanf("%u",&var);
+
+//     unsigned int left = var >> 4;
+//     unsigned int right = var << 4
+//     unsigned int res = left | right;
+//     printf("After Swapping the no becomes : %d \n",res);
+
+//     return 0;
+// }
+
+// delete particular bit from a given no
+
+// #include <stdio.h>
+
+// int main(){
+//     unsigned int var;
+//     int pos;
+//     scanf("%u",&var);
+//     scanf("%d",&pos);
+
+//     unsigned int left = var >> (pos+1);
+//     unsigned int right = var & ((1<<pos) - 1);
+//     unsigned int res = (left << pos) | right;
+//     printf("After Deleting the no becomes : %d \n",res);
+
+//     return 0;
+// }
+
+
+// swap 5th and 7th nibble 
+
+// #include <stdio.h>
+
+// int main(){
+//     unsigned int var=0x11223344;
+//     unsigned int LEFT = (var & 0x000F0000) << 8;
+//     unsigned int RIGHT = (var & 0x0F000000) >> 8;
+
+//     unsigned int res = LEFT | RIGHT | (var & 0x0F0FFFFF);
+
+//     printf("After Swapping the no becomes : %u \n",res);
+
+//     return 0;
+// }   
