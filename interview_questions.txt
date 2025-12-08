@@ -2233,3 +2233,80 @@ float by default is double in size in cpp so we need to add f/F at end
 
 function and constructor has no role in structure size it has separate code segment
 
+
+
+
+
+
+union share the same memory location so we can access individual byte of any datatype using union look at the example below : 
+
+union intParts {
+    int theInt;
+    char bytes[sizeof(int)];
+};
+
+int main() {
+    union intParts p;
+    p.theInt = 1;
+
+    if (p.bytes[0] == 1)
+        printf("Little Endian\n");
+    else
+        printf("Big Endian\n");
+
+    return 0;
+}
+
+
+
+✔️ 1) Structure inside a Union
+
+#include <stdio.h>
+
+typedef struct {
+    unsigned char byte0;
+    unsigned char byte1;
+    unsigned char byte2;
+    unsigned char byte3;
+} Bytes;
+
+union Register {
+    unsigned int value;
+    Bytes parts; // structure inside union
+};
+
+int main() {
+    union Register reg;
+    reg.value = 0x12345678;
+
+    printf("Byte 0: %02X\n", reg.parts.byte0);
+    printf("Byte 1: %02X\n", reg.parts.byte1);
+    printf("Byte 2: %02X\n", reg.parts.byte2);
+    printf("Byte 3: %02X\n", reg.parts.byte3);
+}
+
+
+
+✔️ 2) Union inside a Structure
+
+#include <stdio.h>
+
+typedef struct {
+    unsigned char type;  // Type of packet
+    unsigned short length;
+    union {
+        int number;
+        float decimal;
+        char text[20];
+    } data;  // union inside structure
+} Packet;
+
+int main() {
+    Packet pkt;
+    pkt.type = 1;
+    pkt.length = sizeof(int);
+    pkt.data.number = 2025;  // using integer member of union
+
+    printf("Packet Type: %d\n", pkt.type);
+    printf("Data as Number: %d\n", pkt.data.number);
+}
