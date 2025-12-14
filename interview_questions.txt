@@ -54,16 +54,41 @@ Names cannot contain whitespaces or special characters like !, #, %, etc.
 Reserved words (such as int) cannot be used as names
 
 
+32-bit (ILP32, e.g., 32-bit Linux/Windows)
 
+char: 1
+short: 2
+int: 4
+long: 4
+long long: 8
+float: 4
+double: 8
+long double: 12 (sometimes 16)
+pointer: 4
 
+64-bit Windows (LLP64, e.g., MSVC)
 
+char: 1
+short: 2
+int: 4
+long: 8
+long long: 8
+float: 4
+double: 8
+long double: 8 (MSVC treats it same as double)
+pointer: 8
 
+64-bit Unix/macOS (LP64, e.g., gcc/clang on x86_64)
 
-int	    2 or 4 bytes	Stores whole numbers, without decimals
-float	4 bytes	        Stores fractional numbers, containing one or more decimals. Sufficient for storing 6-7 decimal digits
-double	8 bytes	        Stores fractional numbers, containing one or more decimals. Sufficient for storing 15 decimal digits
-char	1 byte	        Stores a single character/letter/number, or ASCII values
-
+char: 1
+short: 2
+int: 4
+long: 8
+long long: 8
+float: 4
+double: 8
+long double: 16 (often 80-bit extended stored in 16 bytes)
+pointer: 8
 
 */
 
@@ -322,11 +347,15 @@ A static variable in C is a variable that retains its value between function cal
 
 16. What is the difference between static and dynamic linking in C?
 
-Ans -> Static linking involves linking libraries at compile-time, resulting in a larger executable but with no external dependencies. Dynamic linking links libraries at runtime, resulting in smaller executables but requiring external library files to run.
+Ans -> Static linking involves linking libraries at compile-time, resulting in a larger 
+executable but with no external dependencies. Dynamic linking links libraries at runtime, 
+resulting in smaller executables but requiring external library files to run.
 
 17. What is a header file in C?
 
-Ans -> A header file in C contains declarations of functions, macros, data types, etc., which are defined in corresponding source files. It allows sharing declarations across multiple source files.
+Ans -> A header file in C contains declarations of functions, macros, data types, etc., 
+which are defined in corresponding source files. It allows sharing declarations across multiple
+ source files.
 
 18. How do you include a header file in C?
 
@@ -711,6 +740,15 @@ Once initialized, the value of a const variable cannot be modified directly or i
 
 jagged array arre array of different sized columng in 2D matrix allocated dynamically
 
+int main(){
+    int **jaggedArray;
+    int rows = 3;
+    jaggedArray = (int **)malloc(rows * sizeof(int *));                                                                             
+    for (int i = 0; i < rows; i++) {
+        jaggedArray[i] = (int *)malloc((i + 1) * sizeof(int));
+    }
+}
+
 if we assign the range of a datatype and then do ++ or increment the 
 identifier then it will point to the starting range of it or nrgative first range if
  it is unsigned array.
@@ -890,6 +928,19 @@ The pointer p is incremented before its value is dereferenced.
 
 *p++ is equivalent to *(p++) because ++ (post-increment) has higher precedence.
 The pointer p is incremented after its value is dereferenced.
+
+eg 
+
+#include <stdio.h>
+int main() {
+    int arr[] = {10, 20, 30, 40};
+    int *p = arr;
+
+    printf("%d\n", *p++); // Outputs 10, then p points to arr[1]
+    printf("%d\n", *++p); // p points to arr[2], outputs 30
+
+    return 0;
+}
 
 
 
@@ -1100,6 +1151,7 @@ int main() {
 /*
 
 functor method based thread creation
+functor are nothing but function objects which overload the operator (). so when we call the object with () it calls the operator () function.
 
 #include <iostream>
 #include <thread>
@@ -1493,6 +1545,23 @@ Addition of Binary string
 11101
 01011
 
+int main() {
+    string s1 = "11101";
+    string s2 = "01011";
+    string result;
+int carry = 0;
+for (int i = s1.length() - 1, j = s2.length() - 1; i >= 0 || j >= 0 || carry; i--, j--) {
+    int sum = carry;
+    if (i >= 0) sum += s1[i] - '0';
+    if (j >= 0) sum += s2[j] - '0';
+    result.push_back((sum % 2) + '0');
+    carry = sum / 2;
+}
+    reverse(result.begin(), result.end());
+    cout << "Sum: " << result << endl; // Output: Sum: 101000
+    return 0;
+}
+
 sum % 2 gives the binary digit (either 0 or 1) to store at the current position.
 
 sum / 2 gives the carry to pass to the next iteration.
@@ -1577,7 +1646,7 @@ void shallow_copy(Student *src, Student *dest) {
 Note :  In normal struct copy (s2 = s1), shallow copy happens by default in C.
 If the struct has no pointers, then shallow copy is enough!
 
-
+“If we don’t use pointers or shared resources, shallow copy creates a new copy of that resource.”
 
 /* Pointer to a Constant , Constatnt Pointer , Constant Pointer pointing to a constant*/
 
@@ -1629,7 +1698,13 @@ Register Keyword with global variable :
 
 No, you cannot use the register keyword with global variables in C.
 
+The register keyword is only a request to store a variable in a CPU register, and register variables cannot have a memory address that can be taken using &.
 
+🔴 Global variables must:
+
+✔ Have a fixed memory address
+✔ Be stored in global memory (data or BSS segment)
+✔ Be accessible from other files (linker level)
 
 
 while dealing with function many a times we pass array or any other data structure using pointers.
@@ -1878,55 +1953,6 @@ unsigned int extract_bits(unsigned int num, int start, int end) {
 
 // Example: Extract bits 4-7 from 0x12F4
 // Result: (0x12F4 >> 4) & 0x0F = 0x2F & 0x0F = 0x0F
-```
-
-## 5. Real-World Applications
-
-### Status Flags Example
-```c
-#define FLAG_READY     (1 << 0)  // 0x01
-#define FLAG_ERROR     (1 << 1)  // 0x02  
-#define FLAG_COMPLETE  (1 << 2)  // 0x04
-#define FLAG_TIMEOUT   (1 << 3)  // 0x08
-
-unsigned int status = 0x00;
-
-// Set ready flag
-status |= FLAG_READY;
-
-// Check if error occurred
-if (status & FLAG_ERROR) {
-    printf("Error detected!\n");
-}
-
-// Clear timeout flag
-status &= ~FLAG_TIMEOUT;
-```
-
-### RGB Color Manipulation
-```c
-// RGB: Red(8 bits) Green(8 bits) Blue(8 bits)
-unsigned int color = 0xFF5733;  // Orange color
-
-// Extract individual components
-unsigned int red   = (color >> 16) & 0xFF;  // 0xFF
-unsigned int green = (color >> 8)  & 0xFF;  // 0x57
-unsigned int blue  = color & 0xFF;          // 0x33
-
-// Create color from components
-unsigned int new_color = (red << 16) | (green << 8) | blue;
-```
-
-### Bit Packing (Memory Optimization)
-```c
-// Pack multiple small values into one integer
-struct {
-    unsigned int age    : 7;   // 0-127 (7 bits)
-    unsigned int gender : 1;   // 0-1   (1 bit)
-    unsigned int score  : 10;  // 0-1023 (10 bits)
-    unsigned int level  : 4;   // 0-15  (4 bits)
-    // Total: 22 bits instead of 4 separate ints (128 bits)
-} player_data;
 ```
 
 ## 6. Common Interview Questions & Solutions
@@ -2310,3 +2336,12 @@ int main() {
     printf("Packet Type: %d\n", pkt.type);
     printf("Data as Number: %d\n", pkt.data.number);
 }
+
+
+
+Rules for Struct Size Calculation
+Rule	Meaning
+1	Each data member starts at an address multiple of its alignment
+2	Compiler adds padding between members if required
+3	Total struct size must be multiple of largest member’s alignment
+4	Ordering members by descending size reduces padding
