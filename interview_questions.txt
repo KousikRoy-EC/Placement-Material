@@ -7,6 +7,13 @@
 // In C, the bool type is not a built-in data type
 
 
+char s1[10] = "string";
+char s2[10];
+s2 = "string";
+/* error! only initialization is possible and not the */
+/* assignment- because array assignment is not possible *
+
+
 /*
 int main(){
     printf("Hello this is C programming");
@@ -2345,3 +2352,69 @@ Rule	Meaning
 2	Compiler adds padding between members if required
 3	Total struct size must be multiple of largest member’s alignment
 4	Ordering members by descending size reduces padding
+
+
+
+
+
+
+
+
+Day 01 : 
+
+
+Implement memcpy and memset from scratch without libraries.
+
+
+void *my_memset(void *ptr, int value, unsigned int num)
+{
+    unsigned char *p = (unsigned char *)ptr;
+
+    while (num--)
+    {
+        *p = (unsigned char)value;
+        p++;
+    }
+
+    return ptr;
+}
+
+
+
+
+void *my_memcpy(void *dest, const void *src, unsigned int num)
+{
+    unsigned char *d = (unsigned char *)dest;
+    const unsigned char *s = (const unsigned char *)src;
+
+    while (num--)
+    {
+        *d = *s;
+        d++;
+        s++;
+    }
+
+    return dest;
+}
+
+
+
+Day 02 : 
+
+A double free is a memory management error that occurs when a program calls free() (or delete in C++) on the same pointer more than once. This results in undefined behavior, which can lead to program crashes, memory corruption, and in some cases, security vulnerabilities that allow for arbitrary code execution. 
+
+
+Fragmentation occur only in heap memory not in stack memory because stack memory is managed by compiler itself and it allocate and deallocate memory in LIFO manner so there is no scope of fragmentation.
+
+void func() { char *d = malloc(10); } -> Pointer d is on Stack, 10 bytes are on Heap.
+
+
+Is it a memoory leak 
+
+void init_system() {
+    // Allocate once, never free
+    static config = malloc(sizeof(Config));
+}
+
+Answer: Not necessarily. If it's needed for entire program lifetime, it's "static allocation by dynamic means". Acceptable in embedded if documented.
+
