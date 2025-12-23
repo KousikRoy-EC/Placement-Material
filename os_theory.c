@@ -1519,3 +1519,22 @@ A conflict arises when a signal handler interrupts a "slow" system call (like `r
 *   **Reentrancy:** Signal handlers are asynchronous. If a handler interrupts `malloc()` (which uses global locks) and then calls `malloc()` itself, the program can deadlock or corrupt memory. Handlers must only call **async-signal-safe** functions (functions that are reentrant or not interruptible).
 *   **Global Variables:** When sharing globals between a handler and the main program, use the `volatile sig_atomic_t` type to ensure atomic reads/writes.
 *   **Performance:** Signals are expensive. They involve context switches and kernel bookkeeping. High-frequency signaling (like using signals for intense IPC) is inefficient compared to pipes or shared memory.
+
+
+
+
+ Signals are not instantaneous. A pending signal is delivered only when the receiving process switches from kernel mode back to user mode (e.g., returning from a system call or being rescheduled
+
+ Concept: Reentrancy
+• Explanation: A function is reentrant if it can be safely interrupted and called again by another thread (or signal handler) before the first call completes.
+• Constraint: Signal handlers must only call async-signal-safe functions. For example, printf() is unsafe because it uses internal buffers/locks. If a program is interrupted inside printf and the signal handler calls printf again, the buffers may become corrupted.
+
+
+
+If the Child (or Parent) tries to Write to that memory:
+
+The CPU triggers a "Page Fault" (Write protection error).
+
+The Kernel pauses, allocates a new physical page, copies only that specific 4KB page, and updates the Page Table.
+
+It marks the page as Read/Write and resumes.

@@ -2268,7 +2268,23 @@ function and constructor has no role in structure size it has separate code segm
 
 
 
+#include <stdio.h>
 
+void check_endianness() {
+    unsigned int x = 1; // 0x00000001
+    
+    // Point a char pointer to the first byte of x
+    char *c = (char*)&x;
+    
+    // If Little Endian: Memory is [01] [00] [00] [00] -> *c is 1
+    // If Big Endian:    Memory is [00] [00] [00] [01] -> *c is 0
+    
+    if (*c) {
+        printf("Little Endian\n");
+    } else {
+        printf("Big Endian\n");
+    }
+}
 
 
 union share the same memory location so we can access individual byte of any datatype using union look at the example below : 
@@ -2290,6 +2306,10 @@ int main() {
     return 0;
 }
 
+0x12345678 in memory:
+
+Little endian:  78 56 34 12
+Big endian:     12 34 56 78
 
 
 ✔️ 1) Structure inside a Union
@@ -2418,3 +2438,393 @@ void init_system() {
 
 Answer: Not necessarily. If it's needed for entire program lifetime, it's "static allocation by dynamic means". Acceptable in embedded if documented.
 
+
+Day 03:
+
+macro declaration for bit manipulation
+macro declaration doesnot need data type of argument as it is replaced by preprocessor
+#define SET_BIT(REG, N)     ((REG) |= (1 << (N)))
+#define CLR_BIT(REG, N)     ((REG) &= ~(1 << (N)))
+#define TOGGLE_BIT(REG, N)  ((REG) ^= (1 << (N)))
+#define CHECK_BIT(REG, N)   (((REG) & (1 << (N))) != 0)
+
+
+
+Day 04:
+
+
+
+111010100101010 -> 010101001010111
+To reverse the bits of the hexadecimal number  without using bitwise operators, you can use a loop to extract each bit and construct the reversed number. Here's a simple C++ program to achieve that:
+
+#include <iostream>
+using namespace std;
+int reverseBits(unsigned int n) {
+    unsigned int reversed = 0;
+    for (int i = 0; i < 32; i++) {
+        reversed <<= 1;          // Shift reversed to the left
+        reversed |= (n & 1);    // Add the least significant bit of n to reversed
+        n >>= 1;                // Shift n to the right
+    }
+    return reversed;
+}
+
+int main() {
+    unsigned int num = 0x12345678;
+    unsigned int reversedNum = reverseBits(num);
+    cout << "Original: 0x" << hex << num << endl;
+    cout << "Reversed: 0x" << hex << reversedNum << endl;
+    return 0;
+}
+*/
+
+
+without bitwise operator 
+
+#include <iostream>
+using namespace std;
+int reverseBits(unsigned int n) {
+    unsigned int reversed = 0;
+    for (int i = 0; i < 32; i++) {
+        reversed = reversed * 2 + (n % 2); // Extract least significant bit and add to reversed
+        n = n / 2;                         // Divide n by 2 to shift right
+    }
+    return reversed;
+}
+int main() {
+    unsigned int num = 0x12345678;
+    unsigned int reversedNum = reverseBits(num);
+    cout << "Original: 0x" << hex << num << endl;
+    cout << "Reversed: 0x" << hex << reversedNum << endl;
+    return 0;
+}
+
+
+In C, typedef and static cannot be combined because:
+
+typedef belongs to type definition
+
+static belongs to object storage / linkage
+
+Bit-fields are endian and compiler dependent. Their bit ordering is not defined by the C standard, 
+so using them for network or file headers causes non-portable and incorrect layouts. 
+Always use masks and shifts instead.
+
+
+typedef struct __attribute__((packed)) {
+    // ??? How do you split 16 bits into 12 and 4?
+    uint16_t device_id : 12; 
+    uint16_t command   : 4;
+    uint8_t  brightness;
+    uint8_t  crc;
+} SmartLightHeader;
+
+The bit field order (device_id vs command) depends on whether your machine is Little Endian or Big Endian.
+
+If the output of Device ID looks "scrambled," try swapping the order of device_id and command in the struct definition. This is a real-world problem you will face!
+
+
+
+
+
+
+
+
+
+
+
+
+
+#include <stdio.h>
+#include <stdlib.h>
+// In  this file i need to solve 20 - 25 bit manipulation problem that are asked in embedded system interviews.
+
+// Problem: Check if a number is even or odd using bit manipulation.
+
+// Solutions:
+
+int isEven(int num) {
+    return (num & 1) == 0;   // last bit 0 means even 
+}
+
+// Problem: Count the number of set bits (1s) in an integer.
+
+int countSetBits(int num) {
+    int count = 0;
+    while (num) {
+        count += num & 1; // Increment count if last bit is 1
+        num >>= 1;        // Right shift to check next bit
+    }
+    return count;
+}
+
+// Problem: Toggle the ith bit of a number.
+
+int toggleIthBit(int num, int i) {
+    return num ^ (1 << i); // XOR with 1 at ith position to toggle
+}
+
+// Problem: Set the ith bit of a number.
+
+int setIthBit(int num, int i) {
+    return num | (1 << i); // OR with 1 at ith position to set
+}
+
+// Problem: Clear the ith bit of a number.
+
+int clearIthBit(int num, int i) {
+    return num & ~(1 << i); // AND with NOT 1 at ith position to clear
+}
+
+// Problem: Check if the ith bit is set or not.
+
+int isIthBitSet(int num, int i) {
+    return (num & (1 << i)) != 0; // AND with 1 at ith position to check
+}
+
+// Problem: Find the position of the rightmost set bit.
+
+int findRightmostSetBit(int num) {
+    int position = 0;
+    while (num) {
+        if (num & 1) {
+            return position;
+        }
+        num >>= 1;
+        position++;
+    }
+    return -1; // No set bit found
+}
+
+// Problem: Find the position of the leftmost set bit.
+
+int findLeftmostSetBit(unsigned int num) {
+    int position = -1;
+    int currentPos = 0;
+    while (num) {
+        if (num & 1) {
+            position = currentPos;
+        }
+        num >>= 1;
+        currentPos++;
+    }
+    return position; // Returns -1 if no set bit found
+}
+
+// Problem: Swap two numbers using bit manipulation.
+
+void swap(int *a, int *b) {
+    if (a != b) { // Check if the pointers are not the same
+        *a = *a ^ *b;
+        *b = *a ^ *b;
+        *a = *a ^ *b;
+    }
+}
+
+// Problem: Reverse the bits of an integer.
+
+unsigned int reverseBits(unsigned int num) {
+    unsigned int reversed = 0;
+    for (int i = 0; i < sizeof(num) * 8; i++) {
+        reversed <<= 1;          // Shift reversed to left
+        reversed |= (num & 1);  // Add last bit of num to reversed
+        num >>= 1;              // Shift num to right
+    }
+    return reversed;
+}
+
+// Problem: Check if a number is a power of two.
+
+int isPowerOfTwo(int num) {
+    return num > 0 && (num & (num - 1)) == 0; // A power of two has only one set bit
+}
+
+// Problem: Count the number of bits required to convert integer A to integer B.
+
+int countBitsToConvert(int a, int b) {
+    int count = 0;
+    int xor = a ^ b; // XOR will give bits that are different
+    while (xor) {
+        count += xor & 1; // Increment count if last bit is 1
+        xor >>= 1;        // Right shift to check next bit
+    }
+    return count;
+}
+
+// Problem: Find the only non-repeating element in an array where every other element
+
+int findNonRepeatingElement(int arr[], int size) {
+    int result = 0;
+    for (int i = 0; i < size; i++) {
+        result ^= arr[i]; // XORing all elements will cancel out repeating elements
+    }
+    return result;
+}
+
+// Problem: Generate all subsets of a set using bit manipulation.
+
+void generateSubsets(int set[], int size) {
+    int totalSubsets = 1 << size; // 2^size subsets
+    for (int i = 0; i < totalSubsets; i++) {
+        printf("{ ");
+        for (int j = 0; j < size; j++) {
+            if (i & (1 << j)) { // Check if jth bit is set
+                printf("%d ", set[j]);
+            }
+        }
+        printf("}\n");
+    }
+}
+
+// Problem: Find the missing number in an array of size n-1 containing numbers
+
+int findMissingNumber(int arr[], int size) {
+    int n = size + 1; // Since one number is missing
+    int totalXOR = 0;
+    for (int i = 1; i <= n; i++) {
+        totalXOR ^= i; // XOR of all numbers from 1 to n
+    }
+    int arrXOR = 0;
+    for (int i = 0; i < size; i++) {
+        arrXOR ^= arr[i]; // XOR of all elements in the array
+    }
+    return totalXOR ^ arrXOR; // Missing number is the XOR of the two results
+}
+
+// Problem: Count the number of bits to flip to convert A to B.
+
+int countBitsToFlip(int a, int b) {
+    int xor = a ^ b;
+    int count = 0;
+    while (xor) {
+        count += xor & 1;
+        xor >>= 1;
+    }
+    return count;
+}
+
+// Problem: Check if a number is a palindrome in binary representation.
+
+int isBinaryPalindrome(int num) {
+    int reversed = 0, original = num;
+    while (num > 0) {
+        reversed = (reversed << 1) | (num & 1);
+        num >>= 1;
+    }
+    return original == reversed;
+}
+
+// Problem: Perform addition of two integers without using the '+' operator.
+
+int addIntegers(int a, int b) {
+    while (b != 0) {
+        int carry = a & b; // Calculate carry
+        a = a ^ b;         // Sum without carry
+        b = carry << 1;    // Shift carry to the left
+    }
+    return a;
+}
+
+// Problem: Find the two non-repeating elements in an array where every other element
+
+void findNonRepeatingElements(int arr[], int size) {
+    int xorAll = 0;
+    for (int i = 0; i < size; i++) {
+        xorAll ^= arr[i]; // XOR of all elements
+    }
+
+    // Find a set bit (rightmost set bit)
+    int setBit = xorAll & -xorAll;
+
+    int num1 = 0, num2 = 0;
+    for (int i = 0; i < size; i++) {
+        if (arr[i] & setBit) {
+            num1 ^= arr[i]; // Group with the set bit
+        } else {
+            num2 ^= arr[i]; // Group without the set bit
+        }
+    }
+
+    printf("The two non-repeating elements are: %d and %d\n", num1, num2);  
+}
+
+
+
+#include <stdio.h>
+#include <stdint.h>
+/*
+int main(){
+    unsigned int a = 1;
+    char ptr = (char)&a;
+    if(*ptr == 1){
+        printf("Little Endian\n");
+    } else {
+        printf("Big Endian\n");
+    }
+    return 0;
+}
+*/
+
+/*
+union {
+    unsigned int a;
+    char bytes[4];
+} EndiannessChecker;
+
+int main() {
+    EndiannessChecker.a = 1;
+    if (EndiannessChecker.bytes[0] == 1) {
+        printf("Little Endian\n");
+    } else {
+        printf("Big Endian\n");
+    }
+    return 0;
+}
+*/
+
+
+// swap 16 byte of num
+
+// int swpa16bit_var(uint16_t *num){
+//     *num = (((*num & 0xF000) >> 12) | ((*num & 0x0F00) >> 4) | ((*num & 0x00F0) << 4) | ((*num & 0x000F) << 12));
+//     return 0;
+// }
+
+// int swpa16bit_var(uint16_t *num){
+//     *num = (((*num & 0xFF00) >> 8) | ((*num & 0x00FF) << 8));
+//     return 0;
+// }
+
+
+// int main(){
+//     uint16_t num = 0x1234;
+//     swpa16bit_var(&num);
+//     printf("Swapped: 0x%04x\n", num);
+//     return 0;
+// }
+
+
+// It reverses all 32 bits of the number not byte
+int main(){
+    uint32_t num = 0x12345678;
+    uint32_t swapped = 0;
+    while(num){
+        swapped = swapped * 2;
+        swapped |= num & 1;
+        num = num / 2;
+    }
+    printf("Swapped: 0x%08x\n", swapped);
+    return 0;
+}
+
+int main(){
+    uint32_t num = 0x12345678;
+    uint32_t swapped = 0;
+    while(num){
+        swapped = swapped * 256;
+        swapped += num % 256;
+        num = num / 256;
+    }
+    printf("Swapped: 0x%08x\n", swapped);
+    return 0;
+}
