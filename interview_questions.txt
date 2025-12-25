@@ -2418,6 +2418,13 @@ void *my_memcpy(void *dest, const void *src, unsigned int num)
 }
 
 
+In C, when a char (or short) is passed to a function, it is first promoted to int due to the default integer promotion rules.
+Functions like memset therefore use int as the parameter type, which also removes ambiguity because char may be signed or unsigned depending on the system.
+
+memset(buf, 0x12345678, 4) does NOT write
+78 56 34 12 to buf. Instead, it writes
+78 78 78 78 because only the least significant byte (0x78) is used to fill the memory.
+
 
 Day 02 : 
 
@@ -2828,3 +2835,51 @@ int main(){
     printf("Swapped: 0x%08x\n", swapped);
     return 0;
 }
+
+
+
+
+Topic 4: Reentrancy
+Definition: A function is Reentrant if it can be safely interrupted in the middle of execution, called again (by an ISR or another thread), and complete both executions without data corruption.
+
+What makes a function Non-Reentrant (BAD for ISR)?
+
+Global Variables: If main() is writing to a global int count, and ISR interrupts and writes to int count, the value is corrupted.
+Static Variables: They hold state between calls.
+Locks/Mutexes: If main() holds a lock and ISR tries to take it -> Deadlock.
+
+
+Q: "Can I use printf or malloc in an ISR? Why not?"
+
+Answer: NO. Never.
+Reason 1: They are Blocking.
+
+printf writes to the UART console. It might wait for the UART buffer to be empty. An ISR must never wait/sleep. If the ISR sleeps, the kernel panics because there is no process to wake it up.
+
+Reason 2: They use Mutexes (Deadlock Risk).
+
+malloc() {
+    lock(heap_mutex);
+    find_free_block();
+    update_heap_metadata();
+    unlock(heap_mutex);
+}
+
+The heap is shared global memory.
+malloc manages the Heap. To prevent corruption, it uses a Lock.
+Scenario:
+Main Program calls malloc(). It acquires the Heap Lock.
+Interrupt fires! CPU jumps to ISR.
+ISR calls malloc().
+ISR tries to acquire the Heap Lock... but Main Program already has it.
+ISR waits for Main to release it.
+BUT Main cannot run until ISR finishes.
+Result: DEADLOCK. System hangs.
+
+Reason 3: Non-Deterministic Timing.
+
+malloc searches for a free block. This might take 10ns or 10ms. Real-time systems require predictable timing.
+
+
+
+
