@@ -7,6 +7,8 @@
 // In C, the bool type is not a built-in data type
 
 
+Shashan sheet : https://claude.ai/public/artifacts/088df428-122a-4b7d-bc4d-b821b58140b8
+
 char s1[10] = "string";
 char s2[10];
 s2 = "string";
@@ -2376,6 +2378,24 @@ Rule	Meaning
 
 
 
+Function vs Macro
+
+// Function
+int square(int x) {
+    return x * x;
+}
+
+// Macro
+#define SQUARE(x) ((x) * (x))
+
+// Key differences:
+// 1. Functions have type checking, macros don't
+// 2. Macros are expanded by preprocessor (faster, no overhead)
+// 3. Macros can cause side effects
+
+int a = 5;
+int result = SQUARE(a++); // a++ executed twice!
+// result = ((a++) * (a++)) - WRONG!
 
 
 
@@ -2882,4 +2902,239 @@ malloc searches for a free block. This might take 10ns or 10ms. Real-time system
 
 
 
+
+
+what is inline function
+
+Inline functions are expanded at the point of call, potentially reducing function call overhead. They should be used:
+
+For small, frequently called functions
+To reduce stack usage
+When timing is critical However, overuse can increase code size, so they should be used judiciously.
+
+
+#include <stdio.h>
+
+// The inline keyword suggests the compiler to inline this function
+inline int max(int a, int b) {
+    return (a > b) ? a : b;
+}
+
+int main() {
+    int x = 10, y = 20;
+    // The compiler may replace this call with the body of max()
+    int result = max(x, y); 
+    printf("The maximum value is: %d\n", result);
+    return 0;
+}
+
+
+ Explain the concept of loop unrolling
+
+
+for (int i = 0; i < 100; i += 2) {
+    a[i] = b[i];
+    a[i + 1] = b[i + 1];
+}
+
+
+
+original loop
+
+for (int i = 0; i < 100; i++) {
+    a[i] = b[i];
+}
+
+
+What is the role of assertions in embedded C programming, and how should they be used?
+
+Assertions are statements used to check for conditions that should always be true. In embedded C programming:
+
+assert(pointer != NULL);
+
+
+
+The individual elements of a program are called Tokens. There are following 6 types of tokens are available in C:
+
+Identifiers
+Keywords
+Constants
+Operators
+Special Characters
+Strings
+
+
+
+
+
+What's the value of the expression 5["abxdef"]?
+output - f
+
+
+
+
+Can we compile a program without a main() function?
+Yes, we can compile a program without main() function Using Macro.
+
+E.g.
+
+#include<studio.h>
+#define abc main
+int abc ()
+{
+printf("Hello World ");
+return 0;
+}
+
+
+
+
+To call a function before the main(), pragma startup directive should be used. E.g.-
+
+#pragma startup fun_name
+
+This pragma directive, on the other hand, is compiler-dependent. This is not supported by gcc. As a result, it will ignore the startup directive and produce no error. But the output, in that case, will be -
+
+
+
+
+
+Add Two Numbers Without Using the Addition Operator
+
+
+  // method 1
+  printf("%d\n", x-(-y));
+
+  // method 2
+  printf("%d\n", -(-x-y));
+
+  // method 3
+  printf("%d\n", abs(-x-y));
+
+  // method 4
+  printf("%d", x-(~y)-1);
+
+
+Subtract Two Number Without Using Subtraction Operator
+
+  printf("%d", x+(~y)+1);
+
+
+
+
+
+difference between atomic function and rentrant function
+
+An atomic operation is an operation that:
+
+Cannot be interrupted
+
+Cannot be interleaved
+
+Is either fully done or not done at all
+
+#include <stdatomic.h>
+
+atomic_int counter;
+
+
+
+
+
+
+
+custom sizeof using macros
+
+#include <stdio.h>
+
+#define size_of_custom(type) (((char*)(&type + 1)) - (char*)(&type))
+
+int main() {
+    int variable = 20;
+    printf("size of variable is : %d",size_of_custom(variable));
+    return 0;
+}
+
+
+
+
+
+
+
+atoi custom
+
+int my_atoi(const char *str)
+{
+    int result = 0;
+    int sign = 1;
+
+    /* 1. Skip leading whitespace */
+    while (*str == ' ' || *str == '\t' || *str == '\n')
+        str++;
+
+    /* 2. Handle optional sign */
+    if (*str == '-') {
+        sign = -1;
+        str++;
+    } else if (*str == '+') {
+        str++;
+    }
+
+    /* 3. Convert digits */
+    while (*str >= '0' && *str <= '9') {
+        result = result * 10 + (*str - '0');
+        str++;
+    }
+
+    return sign * result;
+}
+
+
+
+itoa 
+
+
+void my_itoa(int num, char *str)
+{
+    int i = 0;
+    int sign = num;
+
+    /* 1. Handle zero */
+    if (num == 0) {
+        str[i++] = '0';
+        str[i] = '\0';
+        return;
+    }
+
+    /* 2. Handle negative number */
+    if (num < 0)
+        num = -num;
+
+    /* 3. Extract digits */
+    while (num != 0) {
+        str[i++] = (num % 10) + '0';
+        num /= 10;
+    }
+
+    /* 4. Add sign */
+    if (sign < 0)
+        str[i++] = '-';
+
+    str[i] = '\0';
+
+    /* 5. Reverse the string */
+    int start = 0, end = i - 1;
+    while (start < end) {
+        char temp = str[start];
+        str[start++] = str[end];
+        str[end--] = temp;
+    }
+}
+
+
+
+
+
+
+When you perform the arithmetic sum of two uint8_t variables in C, the result is implicitly promoted to an int
 
