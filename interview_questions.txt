@@ -7,7 +7,7 @@
 // In C, the bool type is not a built-in data type
 
 
-Shashan sheet : https://claude.ai/public/artifacts/088df428-122a-4b7d-bc4d-b821b58140b8
+Shashank sheet : https://claude.ai/public/artifacts/088df428-122a-4b7d-bc4d-b821b58140b8
 
 char s1[10] = "string";
 char s2[10];
@@ -3138,3 +3138,24 @@ void my_itoa(int num, char *str)
 
 When you perform the arithmetic sum of two uint8_t variables in C, the result is implicitly promoted to an int
 
+
+Debounce is the Optimization in which a function is called after a certain period of time has passed since the last time it was invoked. It is commonly used in scenarios where a function is triggered by events that may occur in rapid time, such as button presses or keystrokes.
+
+
+
+
+
+String in c
+
+#include <stdio.h>
+
+int main() {
+    char str[20];
+    char *str = malloc(100);
+    char *str; // dont use as size of str is not defined and it may point to any random memory location
+
+    fgets(str, sizeof(str), stdin);
+    printf("You entered: %s", str);
+
+    return 0;
+}
